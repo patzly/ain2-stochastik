@@ -1,3 +1,20 @@
+#  This file is part of Exam Helper.
+#
+#  Exam Helper is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  Exam Helper is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Exam Helper. If not, see <http://www.gnu.org/licenses/>.
+#
+#  Copyright (c) 2022 by Patrick Zedler
+
 import math
 
 
@@ -19,9 +36,9 @@ def binomial(n, k):
     return fac(n) / (fac(k) * fac(n-k))
 
 
-def bernoulli_distributed(p):
+def bernoulli_distributed(p, x):
     q = 1 - p
-    return [[1, p], [0, q]]
+    return rounded((x-1) * q * p)
 
 
 def bernoulli_expect(p):
@@ -84,9 +101,20 @@ def binomial_min_max(lst, x, y):
     return rounded(result)
 
 
-def geom_distributed(x, p):
-    q = 1 - p
-    return rounded(p * q**(x - 1))
+def geom_distributed(p, x):
+    if x >= 1:
+        q = 1 - p
+        return rounded(p * q**(x - 1))
+    else:
+        return 0
+
+
+def geom_max(p, x):
+    if x >= 1:
+        q = 1 - p
+        return rounded(1 - q**math.floor(x))
+    else:
+        return 0
 
 
 def geom_expect(p):
@@ -94,11 +122,21 @@ def geom_expect(p):
 
 
 def geom_var(p):
-    return rounded((1 - p) / math.sqrt(p))
+    return rounded((1 - p) / p**2)
 
 
-def poisson_distributed(x, lbd):
+def poisson_distributed(lbd, x):
     if x >= 0:
         return rounded(lbd**x / fac(x) * math.exp(-lbd))
+    else:
+        return 0
+
+
+def poisson_max(lbd, x):
+    if x >= 0:
+        sigma = 0
+        for k in range(math.floor(x)+1):
+            sigma += (lbd**k / fac(k))
+        return rounded(math.exp(-lbd) * sigma)
     else:
         return 0
