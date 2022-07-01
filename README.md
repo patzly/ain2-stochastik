@@ -7,6 +7,8 @@ To use it, simply [download](https://github.com/patzly/ain2-stochastik/releases)
 
 **Make sure you have uploaded the link to this repository in Moodle (deadline: 03.07.2022, 23:59) to be allowed to use it in the exam. In the exam, simply write down for each task that you've used Exam Helper.**
 
+**All data and calculation without guarantee.**
+
 Copyright &copy; 2022 Patrick Zedler. All rights reserved.
 
 [GNU General Public License version 3](https://www.gnu.org/licenses/gpl.txt)
