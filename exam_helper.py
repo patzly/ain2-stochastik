@@ -17,6 +17,7 @@
 
 from utils import statistics_util as statistics
 from utils import probability_discrete_util as probability_discrete
+from utils import probability_continuous_util as probability_continuous
 from utils import input_util as cinput
 from utils import print_util as cprint
 
@@ -409,6 +410,83 @@ def poisson_distributed(lbd=None):
             menu_main()
 
 
+def uniform_distributed(a=None, b=None):
+    jump_to_options = a is not None and b is not None
+
+    if a is None:
+        print("Minimaler Wert a eingeben:")
+        a = cinput.float_rounded(False)
+    if b is None:
+        print("Maximaler Wert b eingeben:")
+        b = cinput.float_rounded(False)
+
+    if not jump_to_options:
+        print(cprint.bold("Gleichverteilung: X ~ U({}, {})".format(a, b)))
+        print("E[X] =", cprint.yellow_bold(probability_continuous.uniform_expect(a, b)))
+        print("Var[X] =", cprint.yellow_bold(probability_continuous.uniform_var(a, b)))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " P(höchstens x)\n" +
+          cprint.bold(2) + " Funktion erneut verwenden\n" +
+          cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(4) + " Hauptmenü")
+
+    match cinput.integer(1, 4):
+        case 1:
+            print("Höchstwert x für P(X <= x) eingeben:")
+            x = cinput.float_rounded(False)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_continuous.uniform_max(a, b, x)))
+            uniform_distributed(a, b)
+        case 2:
+            poisson_distributed()
+        case 3:
+            functions_probability_discrete()
+        case 4:
+            menu_main()
+
+
+def probability_calculation(called_from_discrete):
+    if called_from_discrete:
+        back = " Funktionen zu diskreter Wahrscheinlichkeitstheorie"
+    else:
+        back = " Funktionen zu kontinuierlicher Wahrscheinlichkeitstheorie"
+
+    print(cprint.blue_bold("Kalkulationshilfe:\n") +
+          cprint.bold(1) + " Mindestens x\n" +
+          cprint.bold(2) + " Mehr als x\n" +
+          cprint.bold(3) + " Weniger als x\n" +
+          cprint.bold(4) + " x oder y\n" +
+          cprint.bold(5) + back + "\n" +
+          cprint.bold(6) + " Hauptmenü")
+
+    match cinput.integer(1, 6):
+        case 1:
+            print("Wert x für P(X >= x) eingeben:")
+            x = cinput.float_rounded()
+            print("P(X >= {}) =".format(x), cprint.yellow_bold("1 - P(X <= {})".format(x-1)))
+        case 2:
+            print("Wert x für P(X > x) eingeben:")
+            x = cinput.float_rounded()
+            print("P(X > {}) =".format(x), cprint.yellow_bold("1 - P(X <= {})".format(x)))
+        case 3:
+            print("Wert x für P(X < x) eingeben:")
+            x = cinput.float_rounded()
+            print("P(X < {}) =".format(x), cprint.yellow_bold("P(X <= {})".format(x-1)))
+        case 4:
+            print("Wert x für P(X = x ∨ X = y) eingeben:")
+            x = cinput.float_rounded()
+            print("Wert y für P(X = x ∨ X = y) eingeben:")
+            y = cinput.float_rounded()
+            print("P(X = {} ∨ X = {}) =".format(x, y), cprint.yellow_bold("P(X = {}) + P(X = {})".format(x, y)))
+        case 5:
+            if called_from_discrete:
+                functions_probability_discrete()
+            else:
+                functions_probability_continuous()
+        case 6:
+            menu_main()
+
+
 def menu_main(menu_code=0):
     global list1
     global list2
@@ -493,7 +571,8 @@ def functions_probability_discrete(func_code=0):
               cprint.bold(3) + " Binomial-Verteilung (Anzahl erfolgreicher Versuche)\n" +
               cprint.bold(4) + " Geometrische Verteilung (Wartezeiten bis zum ersten Erfolg)\n" +
               cprint.bold(5) + " Poisson-Verteilung (Häufigkeit eines Ereignisses über Zeitraum betrachtet)\n" +
-              cprint.bold(6) + " Hauptmenü")
+              cprint.bold(6) + " Kalkulationshilfe (mindestens, mehr als, weniger als, oder)\n" +
+              cprint.bold(7) + " Hauptmenü")
         func_code = cinput.integer(1, 6)
 
     match func_code:
@@ -508,6 +587,8 @@ def functions_probability_discrete(func_code=0):
         case 5:
             poisson_distributed()
         case 6:
+            probability_calculation(True)
+        case 7:
             menu_main()
 
     print(cprint.blue_bold("\nOptionen:\n") +
@@ -527,38 +608,35 @@ def functions_probability_discrete(func_code=0):
 def functions_probability_continuous(func_code=0):
     if func_code == 0:
         print(cprint.blue_bold("Kontinuierliche Wahrscheinlichkeitstheorie:\n") +
-              cprint.bold(1) + " Kombinatorik\n" +
-              cprint.bold(2) + " Bernoulli-Verteilung\n" +
-              cprint.bold(3) + " Binomial-Verteilung\n" +
-              cprint.bold(4) + " Geometrisch-Verteilung\n" +
-              cprint.bold(5) + " Poisson-Verteilung\n" +
-              cprint.bold(6) + " Hauptmenü")
-        func_code = cinput.integer(1, 6)
+              cprint.bold(1) + " Gleichverteilung\n" +
+              cprint.bold(2) + " Exponentialverteilung (Dauer zufälliger Zeitintervalle)\n" +
+              cprint.bold(3) + " Normalverteilung\n" +
+              cprint.bold(4) + " Kalkulationshilfe (mindestens, mehr als, weniger als, oder)\n" +
+              cprint.bold(5) + " Hauptmenü")
+        func_code = cinput.integer(1, 5)
 
     match func_code:
         case 1:
-            combination()
+            uniform_distributed()
         case 2:
-            bernoulli_distributed()
+            uniform_distributed()
         case 3:
-            binomial_distributed()
+            uniform_distributed()
         case 4:
-            geom_distributed()
+            probability_calculation(False)
         case 5:
-            poisson_distributed()
-        case 6:
             menu_main()
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " Funktion erneut verwenden\n" +
-          cprint.bold(2) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(2) + " Funktionen zu kontinuierlicher Wahrscheinlichkeitstheorie\n" +
           cprint.bold(3) + " Hauptmenü")
 
     match cinput.integer(1, 3):
         case 1:
-            functions_probability_discrete(func_code)
+            functions_probability_continuous(func_code)
         case 2:
-            functions_probability_discrete()
+            functions_probability_continuous()
         case 3:
             menu_main()
 

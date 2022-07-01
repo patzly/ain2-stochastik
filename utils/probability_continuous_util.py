@@ -15,3 +15,33 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 
+def rounded(n):
+    result = round(n, 3)
+    if result % 1 == 0:
+        return int(result)
+    else:
+        return float(result)
+
+
+def uniform_density(a, b, x):
+    if a <= x <= b:
+        return rounded(1 / (b-a))
+    else:
+        return 0
+
+
+def uniform_max(a, b, x):
+    if x < a:
+        return 0
+    elif a <= x <= b:
+        return rounded((x-a) / (b-a))
+    else:  # x > b
+        return 1
+
+
+def uniform_expect(a, b):
+    return rounded((a+b) / 2)
+
+
+def uniform_var(a, b):
+    return rounded((b-a)**2 / 12)

@@ -73,14 +73,6 @@ def binomial_distributed(n, p, x):
         return 0
 
 
-def binomial_expect(n, p):
-    return rounded(n * p)
-
-
-def binomial_var(n, p):
-    return rounded(n * p * (1 - p))
-
-
 def binomial_min(n, p, x):
     if x < 0:
         return 0
@@ -115,6 +107,14 @@ def binomial_min_max(n, p, x, y):
         return rounded(sigma)
     else:  # x > n
         return 1
+
+
+def binomial_expect(n, p):
+    return rounded(n * p)
+
+
+def binomial_var(n, p):
+    return rounded(n * p * (1 - p))
 
 
 def geom_distributed(p, x):
