@@ -14,6 +14,8 @@
 #  along with Exam Helper. If not, see <http://www.gnu.org/licenses/>.
 #
 #  Copyright (c) 2022 by Patrick Zedler
+import math
+
 
 def rounded(n):
     result = round(n, 3)
@@ -45,3 +47,18 @@ def uniform_expect(a, b):
 
 def uniform_var(a, b):
     return rounded((b-a)**2 / 12)
+
+
+def exponential_max(lam, x):
+    if x >= 0:
+        return rounded(1 - math.e**(-lam * x))
+    else:
+        return 0
+
+
+def exponential_expect(lam):
+    return rounded(1 / lam)
+
+
+def exponential_var(lam):
+    return rounded(1 / lam**2)

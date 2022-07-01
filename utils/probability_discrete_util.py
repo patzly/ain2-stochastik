@@ -141,18 +141,18 @@ def geom_var(p):
     return rounded((1 - p) / p**2)
 
 
-def poisson_distributed(lbd, x):
+def poisson_distributed(lam, x):
     if x >= 0:
-        return rounded(lbd**x / fac(x) * math.exp(-lbd))
+        return rounded(lam**x / fac(x) * math.exp(-lam))
     else:
         return 0
 
 
-def poisson_max(lbd, x):
+def poisson_max(lam, x):
     if x >= 0:
         sigma = 0
         for k in range(math.floor(x)+1):
-            sigma += (lbd**k / fac(k))
-        return rounded(math.exp(-lbd) * sigma)
+            sigma += (lam**k / fac(k))
+        return rounded(math.exp(-lam) * sigma)
     else:
         return 0

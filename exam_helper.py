@@ -251,7 +251,7 @@ def bernoulli_distributed(p=None):
         print("Var[X] =", cprint.yellow_bold(probability_discrete.bernoulli_var(p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(exakt n Versuche bis zum ersten Erfolg)\n" +
+          cprint.bold(1) + " P(genau n Versuche bis zum ersten Erfolg)\n" +
           cprint.bold(2) + " Funktion erneut verwenden\n" +
           cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
           cprint.bold(4) + " Hauptmenü")
@@ -288,7 +288,7 @@ def binomial_distributed(n=None, p=None):
         print("Var[X] =", cprint.yellow_bold(probability_discrete.binomial_var(n, p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(exakt x)\n" +
+          cprint.bold(1) + " P(genau x)\n" +
           cprint.bold(2) + " P(mindestens x)\n" +
           cprint.bold(3) + " P(höchstens x)\n" +
           cprint.bold(4) + " P(mindestens x und höchstens y)\n" +
@@ -336,15 +336,12 @@ def geom_distributed(p=None):
         p = cinput.percentage()
 
     if not jump_to_options:
-        print("Anzahl Versuche x für P(X = x) eingeben:")
-        x = cinput.float_rounded(False)
         print(cprint.bold("Geometrische Verteilung: X ~ geom({})".format(p)))
-        print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.geom_distributed(p, x)))
         print("E[X] =", cprint.yellow_bold(probability_discrete.geom_expect(p)))
         print("Var[X] =", cprint.yellow_bold(probability_discrete.geom_var(p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(exakt x)\n" +
+          cprint.bold(1) + " P(genau x)\n" +
           cprint.bold(2) + " P(höchstens x)\n" +
           cprint.bold(3) + " Funktion erneut verwenden\n" +
           cprint.bold(4) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
@@ -369,23 +366,20 @@ def geom_distributed(p=None):
             menu_main()
 
 
-def poisson_distributed(lbd=None):
-    jump_to_options = lbd is not None
+def poisson_distributed(lam=None):
+    jump_to_options = lam is not None
 
-    if lbd is None:
+    if lam is None:
         print("Durchschnittliche Auftrittsrate λ eingeben:")
-        lbd = cinput.float_rounded(True)
+        lam = cinput.float_rounded(True)
 
     if not jump_to_options:
-        print("Anzahl Vorkommnisse x für P(X = x) eingeben:")
-        x = cinput.float_rounded(False)
-        print(cprint.bold("Poisson-Verteilung: X ~ Po({})".format(lbd)))
-        print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_distributed(lbd, x)))
-        print("E[X] = λ =", cprint.yellow_bold(lbd))
-        print("Var[X] = λ =", cprint.yellow_bold(lbd))
+        print(cprint.bold("Poisson-Verteilung: X ~ Po({})".format(lam)))
+        print("E[X] = λ =", cprint.yellow_bold(lam))
+        print("Var[X] = λ =", cprint.yellow_bold(lam))
 
     print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(exakt x)\n" +
+          cprint.bold(1) + " P(genau x)\n" +
           cprint.bold(2) + " P(höchstens x)\n" +
           cprint.bold(3) + " Funktion erneut verwenden\n" +
           cprint.bold(4) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
@@ -395,13 +389,13 @@ def poisson_distributed(lbd=None):
         case 1:
             print("Anzahl Vorkommnisse x für P(X = x) eingeben:")
             x = cinput.float_rounded(False)
-            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_distributed(lbd, x)))
-            poisson_distributed(lbd)
+            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_distributed(lam, x)))
+            poisson_distributed(lam)
         case 2:
             print("Höchstanzahl Vorkommnisse x für P(X <= x) eingeben:")
             x = cinput.float_rounded(False)
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_max(lbd, x)))
-            poisson_distributed(lbd)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_max(lam, x)))
+            poisson_distributed(lam)
         case 3:
             poisson_distributed()
         case 4:
@@ -445,6 +439,38 @@ def uniform_distributed(a=None, b=None):
             menu_main()
 
 
+def exponential_distributed(lam=None):
+    jump_to_options = lam is not None
+
+    if lam is None:
+        print("Durchschnittliche Auftrittsrate λ eingeben:")
+        lam = cinput.float_rounded(True)
+
+    if not jump_to_options:
+        print(cprint.bold("Exponentialverteilung: X ~ exp({})".format(lam)))
+        print("E[X] =", cprint.yellow_bold(probability_continuous.exponential_expect(lam)))
+        print("Var[X] =", cprint.yellow_bold(probability_continuous.exponential_var(lam)))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " P(höchstens x)\n" +
+          cprint.bold(2) + " Funktion erneut verwenden\n" +
+          cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(4) + " Hauptmenü")
+
+    match cinput.integer(1, 4):
+        case 1:
+            print("Höchstanzahl Vorkommnisse x für P(X = x) eingeben:")
+            x = cinput.float_rounded(False)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_continuous.exponential_max(lam, x)))
+            exponential_distributed(lam)
+        case 2:
+            exponential_distributed()
+        case 3:
+            functions_probability_continuous()
+        case 4:
+            menu_main()
+
+
 def probability_calculation(called_from_discrete):
     if called_from_discrete:
         back = " Funktionen zu diskreter Wahrscheinlichkeitstheorie"
@@ -455,11 +481,12 @@ def probability_calculation(called_from_discrete):
           cprint.bold(1) + " Mindestens x\n" +
           cprint.bold(2) + " Mehr als x\n" +
           cprint.bold(3) + " Weniger als x\n" +
-          cprint.bold(4) + " x oder y\n" +
-          cprint.bold(5) + back + "\n" +
-          cprint.bold(6) + " Hauptmenü")
+          cprint.bold(4) + " Mehr als x und weniger als y\n" +
+          cprint.bold(5) + " x oder y\n" +
+          cprint.bold(6) + back + "\n" +
+          cprint.bold(7) + " Hauptmenü")
 
-    match cinput.integer(1, 6):
+    match cinput.integer(1, 7):
         case 1:
             print("Wert x für P(X >= x) eingeben:")
             x = cinput.float_rounded()
@@ -473,17 +500,23 @@ def probability_calculation(called_from_discrete):
             x = cinput.float_rounded()
             print("P(X < {}) =".format(x), cprint.yellow_bold("P(X <= {})".format(x-1)))
         case 4:
+            print("Wert x für P(x < X < y) eingeben:")
+            x = cinput.float_rounded()
+            print("Wert y für P(x < X < y) eingeben:")
+            y = cinput.float_rounded()
+            print("P({} < X < {}) =".format(x, y), cprint.yellow_bold("P(X <= {}) - P(X <= {})".format(y - 1, x)))
+        case 5:
             print("Wert x für P(X = x ∨ X = y) eingeben:")
             x = cinput.float_rounded()
             print("Wert y für P(X = x ∨ X = y) eingeben:")
             y = cinput.float_rounded()
             print("P(X = {} ∨ X = {}) =".format(x, y), cprint.yellow_bold("P(X = {}) + P(X = {})".format(x, y)))
-        case 5:
+        case 6:
             if called_from_discrete:
                 functions_probability_discrete()
             else:
                 functions_probability_continuous()
-        case 6:
+        case 7:
             menu_main()
 
 
@@ -619,7 +652,7 @@ def functions_probability_continuous(func_code=0):
         case 1:
             uniform_distributed()
         case 2:
-            uniform_distributed()
+            exponential_distributed()
         case 3:
             uniform_distributed()
         case 4:
