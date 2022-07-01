@@ -280,11 +280,11 @@ def binomial_distributed(n=None, p=None):
         p = cinput.percentage()
 
     if not jump_to_options:
-        print(cprint.bold("Binomial-Verteilung:"))
+        print(cprint.bold("Binomial-Verteilung: X ~ Bin({}, {})".format(n, p)))
         for pair in probability_discrete.binomial_distribution(n, p):
             print("P(X = {}) =".format(pair[0]), cprint.yellow_bold(pair[1]))
-        print("Erwartungswert:", cprint.yellow_bold(probability_discrete.binomial_expect(n, p)))
-        print("Varianz:", cprint.yellow_bold(probability_discrete.binomial_var(n, p)))
+        print("E[X] =", cprint.yellow_bold(probability_discrete.binomial_expect(n, p)))
+        print("Var[X] =", cprint.yellow_bold(probability_discrete.binomial_var(n, p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " P(exakt x)\n" +
@@ -338,7 +338,6 @@ def geom_distributed(p=None):
         print("Anzahl Versuche x für P(X = x) eingeben:")
         x = cinput.float_rounded(False)
         print(cprint.bold("Geometrische Verteilung: X ~ geom({})".format(p)))
-
         print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.geom_distributed(p, x)))
         print("E[X] =", cprint.yellow_bold(probability_discrete.geom_expect(p)))
         print("Var[X] =", cprint.yellow_bold(probability_discrete.geom_var(p)))
@@ -408,11 +407,6 @@ def poisson_distributed(lbd=None):
             functions_probability_discrete()
         case 5:
             menu_main()
-
-
-def random_variables():
-    # TODO
-    print("Wahrscheinlichkeit p als Dezimalzahl oder Bruch eingeben:")
 
 
 def menu_main(menu_code=0):
@@ -495,8 +489,8 @@ def functions_probability_discrete(func_code=0):
     if func_code == 0:
         print(cprint.blue_bold("Diskrete Wahrscheinlichkeitstheorie:\n") +
               cprint.bold(1) + " Kombinatorik\n" +
-              cprint.bold(2) + " Bernoulli-Verteilung\n" +
-              cprint.bold(3) + " Binomial-Verteilung\n" +
+              cprint.bold(2) + " Bernoulli-Verteilung (genau zwei mögliche Ausgänge)\n" +
+              cprint.bold(3) + " Binomial-Verteilung (Anzahl erfolgreicher Versuche)\n" +
               cprint.bold(4) + " Geometrische Verteilung (Wartezeiten bis zum ersten Erfolg)\n" +
               cprint.bold(5) + " Poisson-Verteilung (Häufigkeit eines Ereignisses über Zeitraum betrachtet)\n" +
               cprint.bold(6) + " Hauptmenü")
