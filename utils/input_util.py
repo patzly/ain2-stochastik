@@ -71,8 +71,8 @@ def integer(mini=None, maxi=None):
         return user
 
 
-def percentage(allow_fraction=True):
-    # Prevent ValueError from being thrown when input is not a float or not in 0%-100% bounds
+def float_fraction(percent_bounds=False, allow_fraction=False):
+    # Prevent ValueError from being thrown when input is not a float or not in bounds
     user = string()
     try:
         if allow_fraction and "/" in user:
@@ -81,32 +81,18 @@ def percentage(allow_fraction=True):
                 result = float(float(operators[0].strip()) / float(operators[1].strip()))
             else:
                 invalid("Nur einmalige Division zulässig")
-                return percentage()
+                return float_fraction(percent_bounds, allow_fraction)
         else:
             result = float(user)
 
-        if 0 <= result <= 1:
-            return rounded(result)
-        else:
+        if percent_bounds and (result < 0 or result > 1):
             invalid("Nur Werte von 0 bis 1 zulässig")
-            return percentage()
+            return float_fraction(percent_bounds, allow_fraction)
+        else:
+            return rounded(result)
     except ValueError:
         if allow_fraction:
             invalid("Nur Dezimalzahlen und Brüche zulässig")
         else:
             invalid("Nur Dezimalzahlen zulässig")
-        return percentage()
-
-
-def float_rounded(above_zero=False):
-    # Prevent ValueError from being thrown when input is not a float
-    try:
-        result = float(string())
-        if above_zero and result <= 0:
-            invalid("Nur Werte über 0 zulässig")
-            return float_rounded(above_zero)
-        else:
-            return rounded(result)
-    except ValueError:
-        invalid("Nur Dezimalzahlen zulässig")
-        return float_rounded(above_zero)
+        return float_fraction(percent_bounds, allow_fraction)

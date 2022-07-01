@@ -15,6 +15,7 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 import math
+from statistics import NormalDist
 
 
 def rounded(n):
@@ -62,3 +63,15 @@ def exponential_expect(lam):
 
 def exponential_var(lam):
     return rounded(1 / lam**2)
+
+
+def normal_max(mu, sigma, x):
+    return rounded(NormalDist(mu=mu, sigma=sigma).cdf(x))
+
+
+def normal_expect(mu):
+    return rounded(mu)
+
+
+def normal_var(sigma):
+    return rounded(sigma**2)

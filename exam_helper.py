@@ -69,7 +69,7 @@ def quantile():
     else:
         lst = list1
     print("Anteil p als Dezimalzahl eingeben:")
-    pct = cinput.percentage(False)
+    pct = cinput.float_fraction(True, False)
     print(str(pct) + "%-Quantil:", cprint.yellow_bold(statistics.quantile(lst, pct * 0.01)))
 
 
@@ -241,7 +241,7 @@ def bernoulli_distributed(p=None):
 
     if p is None:
         print("Erfolgswahrscheinlichkeit p als Dezimalzahl oder Bruch eingeben:")
-        p = cinput.percentage()
+        p = cinput.float_fraction(True, True)
 
     if not jump_to_options:
         print(cprint.bold("Bernoulli-Verteilung: X ~ Ber({})".format(p)))
@@ -259,7 +259,7 @@ def bernoulli_distributed(p=None):
     match cinput.integer(1, 4):
         case 1:
             print("Anzahl Versuche n bis zum ersten Erfolg für P(X = n) eingeben:")
-            n = cinput.float_rounded(False)
+            n = cinput.float_fraction()
             print("P(X = {}) =".format(n), cprint.yellow_bold(probability_discrete.bernoulli_distributed(p, n)))
             bernoulli_distributed(p)
         case 2:
@@ -278,7 +278,7 @@ def binomial_distributed(n=None, p=None):
         n = int(input())
     if p is None:
         print("Wahrscheinlichkeit p als Dezimalzahl oder Bruch eingeben:")
-        p = cinput.percentage()
+        p = cinput.float_fraction(True, True)
 
     if not jump_to_options:
         print(cprint.bold("Binomial-Verteilung: X ~ Bin({}, {})".format(n, p)))
@@ -333,7 +333,7 @@ def geom_distributed(p=None):
 
     if p is None:
         print("Wahrscheinlichkeit p als Dezimalzahl oder Bruch eingeben:")
-        p = cinput.percentage()
+        p = cinput.float_fraction(True, True)
 
     if not jump_to_options:
         print(cprint.bold("Geometrische Verteilung: X ~ geom({})".format(p)))
@@ -350,12 +350,12 @@ def geom_distributed(p=None):
     match cinput.integer(1, 5):
         case 1:
             print("Anzahl Versuche x für P(X = x) eingeben:")
-            x = cinput.float_rounded(False)
+            x = cinput.float_fraction()
             print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.geom_distributed(p, x)))
             geom_distributed(p)
         case 2:
             print("Höchstanzahl Versuche x für P(X <= x) eingeben:")
-            x = cinput.float_rounded(False)
+            x = cinput.float_fraction()
             print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.geom_max(p, x)))
             geom_distributed(p)
         case 3:
@@ -370,8 +370,8 @@ def poisson_distributed(lam=None):
     jump_to_options = lam is not None
 
     if lam is None:
-        print("Durchschnittliche Auftrittsrate λ eingeben:")
-        lam = cinput.float_rounded(True)
+        print("Durchschnittliche Auftrittsrate λ als Dezimalzahl oder Bruch eingeben:")
+        lam = cinput.float_fraction(False, True)
 
     if not jump_to_options:
         print(cprint.bold("Poisson-Verteilung: X ~ Po({})".format(lam)))
@@ -388,12 +388,12 @@ def poisson_distributed(lam=None):
     match cinput.integer(1, 5):
         case 1:
             print("Anzahl Vorkommnisse x für P(X = x) eingeben:")
-            x = cinput.float_rounded(False)
+            x = cinput.float_fraction()
             print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_distributed(lam, x)))
             poisson_distributed(lam)
         case 2:
             print("Höchstanzahl Vorkommnisse x für P(X <= x) eingeben:")
-            x = cinput.float_rounded(False)
+            x = cinput.float_fraction()
             print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_max(lam, x)))
             poisson_distributed(lam)
         case 3:
@@ -409,10 +409,10 @@ def uniform_distributed(a=None, b=None):
 
     if a is None:
         print("Minimaler Wert a eingeben:")
-        a = cinput.float_rounded(False)
+        a = cinput.float_fraction()
     if b is None:
         print("Maximaler Wert b eingeben:")
-        b = cinput.float_rounded(False)
+        b = cinput.float_fraction()
 
     if not jump_to_options:
         print(cprint.bold("Gleichverteilung: X ~ U({}, {})".format(a, b)))
@@ -428,7 +428,7 @@ def uniform_distributed(a=None, b=None):
     match cinput.integer(1, 4):
         case 1:
             print("Höchstwert x für P(X <= x) eingeben:")
-            x = cinput.float_rounded(False)
+            x = cinput.float_fraction()
             print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_continuous.uniform_max(a, b, x)))
             uniform_distributed(a, b)
         case 2:
@@ -443,8 +443,8 @@ def exponential_distributed(lam=None):
     jump_to_options = lam is not None
 
     if lam is None:
-        print("Durchschnittliche Auftrittsrate λ eingeben:")
-        lam = cinput.float_rounded(True)
+        print("Durchschnittliche Auftrittsrate λ als Dezimalzahl oder Bruch eingeben:")
+        lam = cinput.float_fraction(False, True)
 
     if not jump_to_options:
         print(cprint.bold("Exponentialverteilung: X ~ exp({})".format(lam)))
@@ -459,12 +459,48 @@ def exponential_distributed(lam=None):
 
     match cinput.integer(1, 4):
         case 1:
-            print("Höchstanzahl Vorkommnisse x für P(X = x) eingeben:")
-            x = cinput.float_rounded(False)
+            print("Höchstanzahl Vorkommnisse x für P(X <= x) eingeben:")
+            x = cinput.float_fraction()
             print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_continuous.exponential_max(lam, x)))
             exponential_distributed(lam)
         case 2:
             exponential_distributed()
+        case 3:
+            functions_probability_continuous()
+        case 4:
+            menu_main()
+
+
+def normal_distributed(mu=None, sigma=None):
+    jump_to_options = mu is not None and sigma is not None
+
+    if mu is None:
+        print("Erwartungswert μ als Dezimalzahl eingeben (standard-normalverteilt = 0):")
+        mu = cinput.float_fraction(False, False)
+
+    if sigma is None:
+        print("Standardabweichung σ als Dezimalzahl eingeben (standard-normalverteilt = 1):")
+        sigma = cinput.float_fraction(False, False)
+
+    if not jump_to_options:
+        print(cprint.bold("Normalverteilung: X ~ N({}, {})".format(mu, sigma)))
+        print("E[X] =", cprint.yellow_bold(probability_continuous.normal_expect(mu)))
+        print("Var[X] =", cprint.yellow_bold(probability_continuous.normal_var(sigma)))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " P(höchstens x)\n" +
+          cprint.bold(2) + " Funktion erneut verwenden\n" +
+          cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(4) + " Hauptmenü")
+
+    match cinput.integer(1, 4):
+        case 1:
+            print("Höchstanzahl Vorkommnisse x für P(X <= x) eingeben:")
+            x = cinput.float_fraction()
+            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_continuous.normal_max(mu, sigma, x)))
+            normal_distributed(mu, sigma)
+        case 2:
+            normal_distributed()
         case 3:
             functions_probability_continuous()
         case 4:
@@ -481,42 +517,51 @@ def probability_calculation(called_from_discrete):
           cprint.bold(1) + " Mindestens x\n" +
           cprint.bold(2) + " Mehr als x\n" +
           cprint.bold(3) + " Weniger als x\n" +
-          cprint.bold(4) + " Mehr als x und weniger als y\n" +
-          cprint.bold(5) + " x oder y\n" +
-          cprint.bold(6) + back + "\n" +
-          cprint.bold(7) + " Hauptmenü")
+          cprint.bold(4) + " Mindestens x und höchstens y\n" +
+          cprint.bold(5) + " Mehr als x und weniger als y (zwischen x und y)\n" +
+          cprint.bold(6) + " x oder y\n" +
+          cprint.bold(7) + back + "\n" +
+          cprint.bold(8) + " Hauptmenü")
 
-    match cinput.integer(1, 7):
+    match cinput.integer(1, 8):
         case 1:
             print("Wert x für P(X >= x) eingeben:")
-            x = cinput.float_rounded()
+            x = cinput.float_fraction()
             print("P(X >= {}) =".format(x), cprint.yellow_bold("1 - P(X <= {})".format(x-1)))
         case 2:
             print("Wert x für P(X > x) eingeben:")
-            x = cinput.float_rounded()
+            x = cinput.float_fraction()
             print("P(X > {}) =".format(x), cprint.yellow_bold("1 - P(X <= {})".format(x)))
         case 3:
             print("Wert x für P(X < x) eingeben:")
-            x = cinput.float_rounded()
+            x = cinput.float_fraction()
             print("P(X < {}) =".format(x), cprint.yellow_bold("P(X <= {})".format(x-1)))
         case 4:
-            print("Wert x für P(x < X < y) eingeben:")
-            x = cinput.float_rounded()
-            print("Wert y für P(x < X < y) eingeben:")
-            y = cinput.float_rounded()
-            print("P({} < X < {}) =".format(x, y), cprint.yellow_bold("P(X <= {}) - P(X <= {})".format(y - 1, x)))
+            print("Wert x für P(x <= X <= y) eingeben:")
+            x = cinput.float_fraction()
+            print("Wert y für P(x <= X <= y) eingeben:")
+            y = cinput.float_fraction()
+            # TODO: is resulting formula correct?
+            print("P({} <= X <= {}) =".format(x, y), cprint.yellow_bold("P(X <= {}) - P(X <= {})".format(y - 1, x)))
         case 5:
-            print("Wert x für P(X = x ∨ X = y) eingeben:")
-            x = cinput.float_rounded()
-            print("Wert y für P(X = x ∨ X = y) eingeben:")
-            y = cinput.float_rounded()
-            print("P(X = {} ∨ X = {}) =".format(x, y), cprint.yellow_bold("P(X = {}) + P(X = {})".format(x, y)))
+            print("Wert x für P(x < X < y) eingeben:")
+            x = cinput.float_fraction()
+            print("Wert y für P(x < X < y) eingeben:")
+            y = cinput.float_fraction()
+            # TODO: is resulting formula correct?
+            print("P({} < X < {}) =".format(x, y), cprint.yellow_bold("P(X <= {}) - P(X <= {})".format(y - 1, x)))
         case 6:
+            print("Wert x für P(X = x ∨ X = y) eingeben:")
+            x = cinput.float_fraction()
+            print("Wert y für P(X = x ∨ X = y) eingeben:")
+            y = cinput.float_fraction()
+            print("P(X = {} ∨ X = {}) =".format(x, y), cprint.yellow_bold("P(X = {}) + P(X = {})".format(x, y)))
+        case 7:
             if called_from_discrete:
                 functions_probability_discrete()
             else:
                 functions_probability_continuous()
-        case 7:
+        case 8:
             menu_main()
 
 
@@ -604,7 +649,7 @@ def functions_probability_discrete(func_code=0):
               cprint.bold(3) + " Binomial-Verteilung (Anzahl erfolgreicher Versuche)\n" +
               cprint.bold(4) + " Geometrische Verteilung (Wartezeiten bis zum ersten Erfolg)\n" +
               cprint.bold(5) + " Poisson-Verteilung (Häufigkeit eines Ereignisses über Zeitraum betrachtet)\n" +
-              cprint.bold(6) + " Kalkulationshilfe (mindestens, mehr als, weniger als, oder)\n" +
+              cprint.bold(6) + " Kalkulationshilfe (mindestens, mehr als, weniger als usw.)\n" +
               cprint.bold(7) + " Hauptmenü")
         func_code = cinput.integer(1, 6)
 
@@ -641,10 +686,10 @@ def functions_probability_discrete(func_code=0):
 def functions_probability_continuous(func_code=0):
     if func_code == 0:
         print(cprint.blue_bold("Kontinuierliche Wahrscheinlichkeitstheorie:\n") +
-              cprint.bold(1) + " Gleichverteilung\n" +
+              cprint.bold(1) + " Gleichverteilung (bei unbekannter Verteilung)\n" +
               cprint.bold(2) + " Exponentialverteilung (Dauer zufälliger Zeitintervalle)\n" +
               cprint.bold(3) + " Normalverteilung\n" +
-              cprint.bold(4) + " Kalkulationshilfe (mindestens, mehr als, weniger als, oder)\n" +
+              cprint.bold(4) + " Kalkulationshilfe (mindestens, mehr als, weniger als usw.)\n" +
               cprint.bold(5) + " Hauptmenü")
         func_code = cinput.integer(1, 5)
 
@@ -654,7 +699,7 @@ def functions_probability_continuous(func_code=0):
         case 2:
             exponential_distributed()
         case 3:
-            uniform_distributed()
+            normal_distributed()
         case 4:
             probability_calculation(False)
         case 5:
