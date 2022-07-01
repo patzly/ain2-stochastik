@@ -243,24 +243,23 @@ def bernoulli_distributed(p=None):
         p = cinput.percentage()
 
     if not jump_to_options:
-        print("Anzahl Versuche x für P(X = x) eingeben:")
-        x = cinput.float_rounded(False)
         print(cprint.bold("Bernoulli-Verteilung: X ~ Ber({})".format(p)))
-        print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.bernoulli_distributed(p, x)))
+        for pair in probability_discrete.bernoulli_distribution(p):
+            print("P(X = {}) =".format(pair[0]), cprint.yellow_bold(pair[1]))
         print("E[X] =", cprint.yellow_bold(probability_discrete.bernoulli_expect(p)))
         print("Var[X] =", cprint.yellow_bold(probability_discrete.bernoulli_var(p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(exakt x)\n" +
+          cprint.bold(1) + " P(exakt n Versuche bis zum ersten Erfolg)\n" +
           cprint.bold(2) + " Funktion erneut verwenden\n" +
           cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
           cprint.bold(4) + " Hauptmenü")
 
     match cinput.integer(1, 4):
         case 1:
-            print("Anzahl Versuche x für P(X = x) eingeben:")
-            x = cinput.float_rounded(False)
-            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.bernoulli_distributed(p, x)))
+            print("Anzahl Versuche n bis zum ersten Erfolg für P(X = n) eingeben:")
+            n = cinput.float_rounded(False)
+            print("P(X = {}) =".format(n), cprint.yellow_bold(probability_discrete.bernoulli_distributed(p, n)))
             bernoulli_distributed(p)
         case 2:
             bernoulli_distributed()
@@ -280,48 +279,51 @@ def binomial_distributed(n=None, p=None):
         print("Wahrscheinlichkeit p als Dezimalzahl oder Bruch eingeben:")
         p = cinput.percentage()
 
-    lst = probability_discrete.binomial_distributed(n, p)
-
     if not jump_to_options:
         print(cprint.bold("Binomial-Verteilung:"))
-        print("Formel: (n über x) * p^x * q^(n-x)")
-        for pair in lst:
+        for pair in probability_discrete.binomial_distribution(n, p):
             print("P(X = {}) =".format(pair[0]), cprint.yellow_bold(pair[1]))
         print("Erwartungswert:", cprint.yellow_bold(probability_discrete.binomial_expect(n, p)))
         print("Varianz:", cprint.yellow_bold(probability_discrete.binomial_var(n, p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(mindestens x)\n" +
-          cprint.bold(2) + " P(höchstens x)\n" +
-          cprint.bold(3) + " P(mindestens x und höchstens y)\n" +
-          cprint.bold(4) + " Funktion erneut verwenden\n" +
-          cprint.bold(5) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
-          cprint.bold(6) + " Hauptmenü")
+          cprint.bold(1) + " P(exakt x)\n" +
+          cprint.bold(2) + " P(mindestens x)\n" +
+          cprint.bold(3) + " P(höchstens x)\n" +
+          cprint.bold(4) + " P(mindestens x und höchstens y)\n" +
+          cprint.bold(5) + " Funktion erneut verwenden\n" +
+          cprint.bold(6) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(7) + " Hauptmenü")
 
-    match cinput.integer(1, 6):
+    match cinput.integer(1, 7):
         case 1:
-            print("x eingeben:")
-            x = cinput.integer(0, None)
-            print("P(X >= {}) =".format(x), cprint.yellow_bold(probability_discrete.binomial_min(lst, x)))
+            print("Anzahl erfolgreiche Versuche x für P(X = x) eingeben:")
+            x = cinput.integer(0, n)
+            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.binomial_distributed(n, p, x)))
             binomial_distributed(n, p)
         case 2:
-            print("x eingeben:")
+            print("Mindestanzahl erfolgreiche Versuche x für P(X >= x) eingeben:")
             x = cinput.integer(0, None)
-            print("P(X <= {}) =".format(x)), cprint.yellow_bold(probability_discrete.binomial_max(lst, x))
+            print("P(X >= {}) =".format(x), cprint.yellow_bold(probability_discrete.binomial_min(n, p, x)))
             binomial_distributed(n, p)
         case 3:
+            print("Höchstanzahl erfolgreiche Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.binomial_max(n, p, x)))
+            binomial_distributed(n, p)
+        case 4:
             print("x (mindestens) eingeben:")
             x = cinput.integer(0, None)
             print("y (höchstens) eingeben:")
             y = cinput.integer(0, None)
             print("P({} <= X >= {}) =".format(x, y),
-                  cprint.yellow_bold(probability_discrete.binomial_min_max(lst, x, y)))
+                  cprint.yellow_bold(probability_discrete.binomial_min_max(n, p, x, y)))
             binomial_distributed(n, p)
-        case 4:
-            binomial_distributed()
         case 5:
-            functions_probability_discrete()
+            binomial_distributed()
         case 6:
+            functions_probability_discrete()
+        case 7:
             menu_main()
 
 

@@ -36,9 +36,13 @@ def binomial(n, k):
     return fac(n) / (fac(k) * fac(n-k))
 
 
-def bernoulli_distributed(p, x):
+def bernoulli_distribution(p):
+    return [[1, p], [0, rounded(1-p)]]
+
+
+def bernoulli_distributed(p, n):
     q = 1 - p
-    return rounded((x-1) * q * p)
+    return rounded((n-1) * q * p)
 
 
 def bernoulli_expect(p):
@@ -50,23 +54,23 @@ def bernoulli_var(p):
     return rounded(p * q)
 
 
-def binomial_distributed(n, p):
+def binomial_distribution(n, p):
     # returns array with all binomial distributed values for 0 to n
-    # the first element represent the possible t values
+    # the first element represent the possible k values
     lst = []
-    q = 1 - p
-    if n > 0:
+    if n >= 0:
+        q = 1 - p
         for t in range(0, n+1):
             lst.append([t, rounded(binomial(n, t) * p**t * q**(n-t))])
     return lst
 
 
-def binomial_distributed_x(n, p, x):
-    result = 0
-    q = 1 - p
-    if n > 0:
-        result = binomial(n, x) * p**x * q**(n-x)
-    return rounded(result)
+def binomial_distributed(n, p, x):
+    if n >= 0:
+        q = 1 - p
+        return rounded(binomial(n, x) * p**x * q**(n-x))
+    else:
+        return 0
 
 
 def binomial_expect(n, p):
@@ -77,28 +81,40 @@ def binomial_var(n, p):
     return rounded(n * p * (1 - p))
 
 
-def binomial_min(lst, x):
-    result = 0
-    for pair in lst:
-        if pair[0] >= x:
-            result += pair[1]
-    return rounded(result)
+def binomial_min(n, p, x):
+    if x < 0:
+        return 0
+    elif 0 <= x <= n:
+        sigma = 0
+        for k in range(math.floor(x), n + 1):
+            sigma += binomial_distributed(n, p, k)
+        return rounded(sigma)
+    else:  # x > n
+        return 1
 
 
-def binomial_max(lst, x):
-    result = 0
-    for pair in lst:
-        if pair[0] <= x:
-            result += pair[1]
-    return rounded(result)
+def binomial_max(n, p, x):
+    if x < 0:
+        return 0
+    elif 0 <= x <= n:
+        sigma = 0
+        for k in range(math.floor(x) + 1):
+            sigma += binomial_distributed(n, p, k)
+        return rounded(sigma)
+    else:  # x > n
+        return 1
 
 
-def binomial_min_max(lst, x, y):
-    result = 0
-    for pair in lst:
-        if x <= pair[0] <= y:
-            result += pair[1]
-    return rounded(result)
+def binomial_min_max(n, p, x, y):
+    if x < 0:
+        return 0
+    elif 0 <= x <= n:
+        sigma = 0
+        for k in range(math.floor(x), math.floor(y) + 1):
+            sigma += binomial_distributed(n, p, k)
+        return rounded(sigma)
+    else:  # x > n
+        return 1
 
 
 def geom_distributed(p, x):
