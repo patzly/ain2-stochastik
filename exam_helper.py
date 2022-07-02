@@ -270,6 +270,16 @@ def combination():
         print("Formel: C^W({}, {}) = (({}+{}-1) über {}) =".format(n, k, n, k, k), cprint.yellow_bold(result))
 
 
+def laplace():
+    print("Anzahl günstiger (benötigter) Fälle k eingeben:")
+    k = cinput.integer(0, None)
+    print("Anzahl möglicher Fälle n eingeben:")
+    n = cinput.integer(1, None)
+
+    print(cprint.bold("Laplace-Experiment:"))
+    print("P(Ereignis) = {}/{} =".format(k, n), cprint.yellow_bold(probability_discrete.laplace(n, k)))
+
+
 def bernoulli_distributed(p=None):
     jump_to_options = p is not None
 
@@ -670,28 +680,31 @@ def functions_probability_discrete(func_code=0):
     if func_code == 0:
         print(cprint.blue_bold("Diskrete Wahrscheinlichkeitstheorie:\n") +
               cprint.bold(1) + " Kombinatorik\n" +
-              cprint.bold(2) + " Bernoulli-Verteilung (genau zwei mögliche Ausgänge)\n" +
-              cprint.bold(3) + " Binomial-Verteilung (Anzahl erfolgreicher Versuche)\n" +
-              cprint.bold(4) + " Geometrische Verteilung (Wartezeiten bis zum ersten Erfolg)\n" +
-              cprint.bold(5) + " Poisson-Verteilung (Häufigkeit eines Ereignisses über Zeitraum betrachtet)\n" +
-              cprint.bold(6) + " Kalkulationshilfe (mindestens, mehr als, weniger als usw.)\n" +
+              cprint.bold(2) + " Laplace-Experiment (alle Ausgänge mit identischer Wahrscheinlichkeit)\n" +
+              cprint.bold(3) + " Bernoulli-Verteilung (genau zwei mögliche Ausgänge)\n" +
+              cprint.bold(4) + " Binomial-Verteilung (Anzahl erfolgreicher Versuche)\n" +
+              cprint.bold(5) + " Geometrische Verteilung (Wartezeiten bis zum ersten Erfolg)\n" +
+              cprint.bold(6) + " Poisson-Verteilung (Häufigkeit eines Ereignisses über Zeitraum betrachtet)\n" +
+              cprint.bold(7) + " Kalkulationshilfe (mindestens, mehr als, weniger als usw.)\n" +
               cprint.bold(7) + " Hauptmenü")
-        func_code = cinput.integer(1, 6)
+        func_code = cinput.integer(1, 7)
 
     match func_code:
         case 1:
             combination()
         case 2:
-            bernoulli_distributed()
+            laplace()
         case 3:
-            binomial_distributed()
+            bernoulli_distributed()
         case 4:
-            geom_distributed()
+            binomial_distributed()
         case 5:
-            poisson_distributed()
+            geom_distributed()
         case 6:
-            probability_calculation(True)
+            poisson_distributed()
         case 7:
+            probability_calculation(True)
+        case 8:
             menu_main()
 
     print(cprint.blue_bold("\nOptionen:\n") +

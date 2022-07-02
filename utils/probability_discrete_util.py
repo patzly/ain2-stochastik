@@ -61,6 +61,10 @@ def c_w(n, k):
     return binomial(n+k-1, k)
 
 
+def laplace(n, k):
+    return rounded(k / n)
+
+
 def bernoulli_distribution(p):
     return [[1, p], [0, rounded(1-p)]]
 
