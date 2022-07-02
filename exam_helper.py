@@ -40,26 +40,56 @@ def input_list(save_in_lst1=True):
         return input_list(save_in_lst1)
 
 
-def mean_median_mode_quartile_iqr_span_var_std():
-    if list1 is None:
-        print("Liste eingeben:")
-        lst = input_list()
-    else:
-        lst = list1
-    print("Arithmetisches Mittel:", cprint.yellow_bold(statistics.mean(lst)))
-    print("Median:", cprint.yellow_bold(statistics.median(lst)))
-    mode = statistics.mode(lst)
-    if isinstance(mode, list) and len(lst) > 1:
-        print("Modalwerte:", cprint.yellow_bold(mode))
-    else:
-        print("Modalwert:", cprint.yellow_bold(mode))
-    print("25%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.25)))
-    print("50%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.50)))
-    print("75%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.75)))
-    print("Interquartilabstand:", cprint.yellow_bold(statistics.iqr(lst)))
-    print("Spannweite:", cprint.yellow_bold(statistics.span(lst)))
-    print("Empirische Varianz:", cprint.yellow_bold(statistics.var(lst)))
-    print("Empirische Standardabweichung:", cprint.yellow_bold(statistics.std(lst)))
+def mean_median_mode_quartile_iqr_span_var_std(jump_to_options=False):
+    global list1
+    global list2
+
+    if not jump_to_options:
+        if list1 is None:
+            print("Liste eingeben:")
+            lst = input_list()
+        else:
+            lst = list1
+
+        print("Arithmetisches Mittel:", cprint.yellow_bold(statistics.mean(lst)))
+        print("Median:", cprint.yellow_bold(statistics.median(lst)))
+        mode = statistics.mode(lst)
+        if isinstance(mode, list) and len(lst) > 1:
+            print("Modalwerte:", cprint.yellow_bold(mode))
+        else:
+            print("Modalwert:", cprint.yellow_bold(mode))
+        print("25%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.25)))
+        print("50%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.50)))
+        print("75%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.75)))
+        print("Interquartilabstand:", cprint.yellow_bold(statistics.iqr(lst)))
+        print("Spannweite:", cprint.yellow_bold(statistics.span(lst)))
+        print("Empirische Varianz:", cprint.yellow_bold(statistics.var(lst)))
+        print("Empirische Standardabweichung:", cprint.yellow_bold(statistics.std(lst)))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " Anderes Quantil ausrechnen\n" +
+          cprint.bold(2) + " Funktion mit anderen Werten wiederholen\n" +
+          cprint.bold(3) + " Funktionen zu beschreibender Statistik\n" +
+          cprint.bold(4) + " Hauptmenü")
+
+    match cinput.integer(1, 4):
+        case 1:
+            quantile()
+            mean_median_mode_quartile_iqr_span_var_std(True)
+        case 2:
+            list1 = None
+            list2 = None
+            mean_median_mode_quartile_iqr_span_var_std()
+        case 3:
+            print("Werte beibehalten?\n" +
+                  cprint.bold(1) + " Ja\n" +
+                  cprint.bold(2) + " Nein")
+            if cinput.integer(1, 2) == 2:
+                list1 = None
+                list2 = None
+            functions_statistics()
+        case 4:
+            menu_main()
 
 
 def quantile():
