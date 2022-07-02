@@ -75,13 +75,16 @@ def float_fraction(percent_bounds=False, allow_fraction=False):
     # Prevent ValueError from being thrown when input is not a float or not in bounds
     user = string()
     try:
-        if allow_fraction and "/" in user:
+        if allow_fraction and "/" in user and "%" not in user:
             operators = user.split("/")
             if len(operators) == 2:
                 result = float(float(operators[0].strip()) / float(operators[1].strip()))
             else:
                 invalid("Nur einmalige Division zulässig")
                 return float_fraction(percent_bounds, allow_fraction)
+        elif percent_bounds and "%" in user and "/" not in user:
+            pct = user.replace("%", "").strip()
+            result = float(pct) / 100
         else:
             result = float(user)
 

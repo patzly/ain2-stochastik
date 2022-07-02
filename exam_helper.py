@@ -68,9 +68,9 @@ def quantile():
         lst = input_list()
     else:
         lst = list1
-    print("Anteil p als Dezimalzahl eingeben:")
-    pct = cinput.float_fraction(True, False)
-    print(str(pct) + "%-Quantil:", cprint.yellow_bold(statistics.quantile(lst, pct * 0.01)))
+    print("Anteil p als Dezimalzahl oder mit % eingeben:")
+    p = cinput.float_fraction(True, False)
+    print(str(statistics.rounded(p * 100)) + "%-Quantil:", cprint.yellow_bold(statistics.quantile(lst, p)))
 
 
 def corrcoef_covar():
