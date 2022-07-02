@@ -18,11 +18,8 @@
 import math
 
 
-def rounded(n, keep=False):
-    if keep:
-        result = round(n, 10)
-    else:
-        result = round(n, 3)
+def rounded(n):
+    result = round(n, 3)
     if result % 1 == 0:
         return int(result)
     else:
@@ -65,7 +62,7 @@ def c_w(n, k):
 
 
 def laplace(n, k):
-    return rounded(k / n, True)
+    return rounded(k / n)
 
 
 def bernoulli_distribution(p):
