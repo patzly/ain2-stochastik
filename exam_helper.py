@@ -710,6 +710,6 @@ def functions_probability_continuous(func_code=0):
             menu_main()
 
 
-print("Exam Helper v1.0.0")
+print("Exam Helper v1.0.1")
 print(cprint.yellow("Viel Erfolg!\n"))
 menu_main()
