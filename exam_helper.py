@@ -246,7 +246,7 @@ def combination():
         result = probability_discrete.fac(n) / probability_discrete.fac(n - k)
         print("Variation ohne Wiederholung (z.B. Podestplätze):", cprint.yellow_bold(result))
         print("Anzahl der k-Permutationen aus einer Menge mit n Elementen ohne Wiederholungen")
-        print("Formel: C(n, k) = n! / (n-k)!")
+        print("Formel: P(n, k) = n! / (n-k)!")
     elif not elements_all and elements_sorted and elements_repetition:
         result = n**k
         print("Variation mit Wiederholung (z.B. Passwörter):", cprint.yellow_bold(result))

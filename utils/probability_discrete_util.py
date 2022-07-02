@@ -28,12 +28,12 @@ def rounded(n):
 
 def fac(x):
     # Fakultät
-    return math.factorial(x)
+    return rounded(math.factorial(x))
 
 
 def binomial(n, k):
     # Binomialkoeffizient
-    return fac(n) / (fac(k) * fac(n-k))
+    return rounded(fac(n) / (fac(k) * fac(n-k)))
 
 
 def bernoulli_distribution(p):
