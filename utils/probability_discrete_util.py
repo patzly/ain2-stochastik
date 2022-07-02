@@ -36,6 +36,31 @@ def binomial(n, k):
     return rounded(fac(n) / (fac(k) * fac(n-k)))
 
 
+def p_n(n):
+    # P(n, n) = n!
+    return fac(n)
+
+
+def p(n, k):
+    # P(n, k) = n! / (n-k)!
+    return rounded(fac(n) / fac(n-k))
+
+
+def p_w(n, k):
+    # P^W(n, k) = n^k
+    return rounded(n**k)
+
+
+def c(n, k):
+    # C(n, k) = (n über k)
+    return binomial(n, k)
+
+
+def c_w(n, k):
+    # C^W(n, k) = ((n+k-1) über k)
+    return binomial(n+k-1, k)
+
+
 def bernoulli_distribution(p):
     return [[1, p], [0, rounded(1-p)]]
 

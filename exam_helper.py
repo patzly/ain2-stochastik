@@ -230,7 +230,23 @@ def combination():
             case 2:
                 elements_repetition = False
 
-    print("Gesamtmenge n eingeben:")
+    if elements_all:
+        print("Permutation ohne Wiederholung (z.B. CDs im Regal): P(n, n)")
+        print("Anzahl der k-Permutationen aus einer Menge mit n Elementen ohne Wiederholungen")
+    elif not elements_all and elements_sorted and not elements_repetition:
+        print("Variation ohne Wiederholung (z.B. Podestplätze): P(n, k)")
+        print("Anzahl der k-Permutationen aus einer Menge mit n Elementen ohne Wiederholungen")
+    elif not elements_all and elements_sorted and elements_repetition:
+        print("Variation mit Wiederholung (z.B. Passwörter): P^W(n, k)")
+        print("Anzahl der k-Permutationen aus einer Menge mit n Elementen mit Wiederholungen")
+    elif not elements_all and not elements_sorted and not elements_repetition:
+        print("Kombination ohne Wiederholung (z.B. Lotto): C(n, k)")
+        print("Anzahl der möglichen Kombinationen von k Elementen aus einer Menge mit n Elementen ohne Wiederholungen")
+    elif not elements_all and not elements_sorted and elements_repetition:
+        print("Kombination mit Wiederholung (z.B. Gummibärchen-Orakel): C^W(n, k)")
+        print("Anzahl der möglichen Kombinationen von k Elementen aus einer Menge mit n Elementen mit Wiederholungen")
+
+    print("\nGesamtmenge n eingeben:")
     n = cinput.integer(0, None)
     k = 0
     if not elements_all:
@@ -238,32 +254,20 @@ def combination():
         k = cinput.integer(0, None)
 
     if elements_all:
-        result = probability_discrete.fac(n)
-        print("Permutation ohne Wiederholung (z.B. CDs im Regal):", cprint.yellow_bold(result))
-        print("Anzahl der k-Permutationen aus einer Menge mit n Elementen ohne Wiederholungen")
-        print("Formel: P(n, n) = n!")
+        result = probability_discrete.p_n(n)
+        print("P({}, {}) = {}! =".format(n, n, n), cprint.yellow_bold(result))
     elif not elements_all and elements_sorted and not elements_repetition:
-        result = probability_discrete.fac(n) / probability_discrete.fac(n - k)
-        print("Variation ohne Wiederholung (z.B. Podestplätze):", cprint.yellow_bold(result))
-        print("Anzahl der k-Permutationen aus einer Menge mit n Elementen ohne Wiederholungen")
-        print("Formel: P(n, k) = n! / (n-k)!")
+        result = probability_discrete.p(n, k)
+        print("P({}, {}) = {}! / ({}-{})! =".format(n, k, n, n, k), cprint.yellow_bold(result))
     elif not elements_all and elements_sorted and elements_repetition:
-        result = n**k
-        print("Variation mit Wiederholung (z.B. Passwörter):", cprint.yellow_bold(result))
-        print("Anzahl der k-Permutationen aus einer Menge mit n Elementen mit Wiederholungen")
-        print("Formel: P^W(n, k) = n^k")
+        result = probability_discrete.p_w(n, k)
+        print("P^W({}, {}) = {}^{} =".format(n, k, n, k), cprint.yellow_bold(result))
     elif not elements_all and not elements_sorted and not elements_repetition:
-        result = probability_discrete.binomial(n, k)
-        print("Kombination ohne Wiederholung (z.B. Lotto):", cprint.yellow_bold(result))
-        print("Anzahl der möglichen Kombinationen von k Elementen aus einer Menge mit n Elementen ohne Wiederholungen")
-        print("Formel: C(n, k) = Binomialkoeffizient (n über k)")
+        result = probability_discrete.c(n, k)
+        print("C({}, {}) = ({} über {}) =".format(n, k, n, k), cprint.yellow_bold(result))
     elif not elements_all and not elements_sorted and elements_repetition:
-        numerator = probability_discrete.fac(n + k - 1)
-        denominator = probability_discrete.fac(k) * probability_discrete.fac(n - 1)
-        result = int(numerator / denominator)
-        print("Kombination mit Wiederholung (z.B. Gummibärchen-Orakel):", cprint.yellow_bold(result))
-        print("Anzahl der möglichen Kombinationen von k Elementen aus einer Menge mit n Elementen mit Wiederholungen")
-        print("Formel: C^W(n, k) = Binomialkoeffizient ((n+k-1) über k)")
+        result = probability_discrete.c_w(n, k)
+        print("Formel: C^W({}, {}) = (({}+{}-1) über {}) =".format(n, k, n, k, k), cprint.yellow_bold(result))
 
 
 def bernoulli_distributed(p=None):
@@ -740,6 +744,6 @@ def functions_probability_continuous(func_code=0):
             menu_main()
 
 
-print("Exam Helper v1.0.1")
+print("Exam Helper v1.0.2")
 print(cprint.yellow("Viel Erfolg!\n"))
 menu_main()
