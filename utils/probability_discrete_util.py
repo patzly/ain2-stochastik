@@ -18,8 +18,11 @@
 import math
 
 
-def rounded(n):
-    result = round(n, 3)
+def rounded(n, keep=False):
+    if keep:
+        result = round(n, 10)
+    else:
+        result = round(n, 3)
     if result % 1 == 0:
         return int(result)
     else:
@@ -41,7 +44,7 @@ def p_n(n):
     return fac(n)
 
 
-def p(n, k):
+def p_n_k(n, k):
     # P(n, k) = n! / (n-k)!
     return rounded(fac(n) / fac(n-k))
 
@@ -51,7 +54,7 @@ def p_w(n, k):
     return rounded(n**k)
 
 
-def c(n, k):
+def c_n_k(n, k):
     # C(n, k) = (n über k)
     return binomial(n, k)
 
@@ -62,7 +65,7 @@ def c_w(n, k):
 
 
 def laplace(n, k):
-    return rounded(k / n)
+    return rounded(k / n, True)
 
 
 def bernoulli_distribution(p):
