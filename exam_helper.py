@@ -197,21 +197,18 @@ def frequency():
                 menu_main()
 
 
-def combination():
-    elements_all = False
-    elements_sorted = False
-    elements_repetition = False
+def combination(elements_all=None, elements_sorted=None, elements_repetition=None):
+    if elements_all is None:
+        print("Werden alle Elemente angeordnet?\n" +
+              cprint.bold(1) + " Ja\n" +
+              cprint.bold(2) + " Nein")
+        match cinput.integer(1, 2):
+            case 1:
+                elements_all = True
+            case 2:
+                elements_all = False
 
-    print("Werden alle Elemente angeordnet?\n" +
-          cprint.bold(1) + " Ja\n" +
-          cprint.bold(2) + " Nein")
-    match cinput.integer(1, 2):
-        case 1:
-            elements_all = True
-        case 2:
-            elements_all = False
-
-    if not elements_all:
+    if elements_sorted is None and not elements_all:
         print("Spielt die Reihenfolge eine Rolle?\n" +
               cprint.bold(1) + " Ja\n" +
               cprint.bold(2) + " Nein")
@@ -221,6 +218,7 @@ def combination():
             case 2:
                 elements_sorted = False
 
+    if elements_repetition is None and not elements_all:
         print("Sind Wiederholungen erlaubt?\n" +
               cprint.bold(1) + " Ja\n" +
               cprint.bold(2) + " Nein")
@@ -230,20 +228,26 @@ def combination():
             case 2:
                 elements_repetition = False
 
+    name = None
     if elements_all:
-        print("Permutation ohne Wiederholung (z.B. CDs im Regal): P(n, n)")
+        name = "P(n, n)"
+        print("Permutation ohne Wiederholung (z.B. CDs im Regal):", name)
         print("Anzahl der k-Permutationen aus einer Menge mit n Elementen ohne Wiederholungen")
     elif not elements_all and elements_sorted and not elements_repetition:
-        print("Variation ohne Wiederholung (z.B. Podestplätze): P(n, k)")
+        name = "P(n, k)"
+        print("Variation ohne Wiederholung (z.B. Podestplätze):", name)
         print("Anzahl der k-Permutationen aus einer Menge mit n Elementen ohne Wiederholungen")
     elif not elements_all and elements_sorted and elements_repetition:
-        print("Variation mit Wiederholung (z.B. Passwörter): P^W(n, k)")
+        name = "P^W(n, k)"
+        print("Variation mit Wiederholung (z.B. Passwörter):", name)
         print("Anzahl der k-Permutationen aus einer Menge mit n Elementen mit Wiederholungen")
     elif not elements_all and not elements_sorted and not elements_repetition:
-        print("Kombination ohne Wiederholung (z.B. Lotto): C(n, k)")
+        name = "C(n, k)"
+        print("Kombination ohne Wiederholung (z.B. Lotto):", name)
         print("Anzahl der möglichen Kombinationen von k Elementen aus einer Menge mit n Elementen ohne Wiederholungen")
     elif not elements_all and not elements_sorted and elements_repetition:
-        print("Kombination mit Wiederholung (z.B. Gummibärchen-Orakel): C^W(n, k)")
+        name = "C^W(n, k)"
+        print("Kombination mit Wiederholung (z.B. Gummibärchen-Orakel):", name)
         print("Anzahl der möglichen Kombinationen von k Elementen aus einer Menge mit n Elementen mit Wiederholungen")
 
     print("\nGesamtmenge n eingeben:")
@@ -268,6 +272,22 @@ def combination():
     elif not elements_all and not elements_sorted and elements_repetition:
         result = probability_discrete.c_w(n, k)
         print("Formel: C^W({}, {}) = (({}+{}-1) über {}) =".format(n, k, n, k, k), cprint.yellow_bold(result))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " {} mit anderen Werten berechnen\n".format(name) +
+          cprint.bold(2) + " Kombinatorik-Formelsuche erneut starten\n" +
+          cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(4) + " Hauptmenü")
+
+    match cinput.integer(1, 4):
+        case 1:
+            combination(elements_all, elements_sorted, elements_repetition)
+        case 2:
+            combination()
+        case 3:
+            functions_probability_discrete()
+        case 4:
+            menu_main()
 
 
 def laplace():
@@ -553,9 +573,9 @@ def normal_distributed(mu=None, sigma=None):
 
 def probability_calculation(called_from_discrete):
     if called_from_discrete:
-        back = " Funktionen zu diskreter Wahrscheinlichkeitstheorie"
+        back = "Funktionen zu diskreter Wahrscheinlichkeitstheorie"
     else:
-        back = " Funktionen zu kontinuierlicher Wahrscheinlichkeitstheorie"
+        back = "Funktionen zu kontinuierlicher Wahrscheinlichkeitstheorie"
 
     print(cprint.blue_bold("Kalkulationshilfe:\n") +
           cprint.bold(1) + " Mindestens x\n" +
@@ -563,7 +583,7 @@ def probability_calculation(called_from_discrete):
           cprint.bold(3) + " Weniger als x\n" +
           cprint.bold(4) + " Zwischen x und y\n" +
           cprint.bold(5) + " x oder y\n" +
-          cprint.bold(6) + back + "\n" +
+          cprint.bold(6) + " \n".format(back) +
           cprint.bold(7) + " Hauptmenü")
 
     match cinput.integer(1, 7):
@@ -686,8 +706,8 @@ def functions_probability_discrete(func_code=0):
               cprint.bold(5) + " Geometrische Verteilung (Wartezeiten bis zum ersten Erfolg)\n" +
               cprint.bold(6) + " Poisson-Verteilung (Häufigkeit eines Ereignisses über Zeitraum betrachtet)\n" +
               cprint.bold(7) + " Kalkulationshilfe (mindestens, mehr als, weniger als usw.)\n" +
-              cprint.bold(7) + " Hauptmenü")
-        func_code = cinput.integer(1, 7)
+              cprint.bold(8) + " Hauptmenü")
+        func_code = cinput.integer(1, 8)
 
     match func_code:
         case 1:
