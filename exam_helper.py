@@ -517,13 +517,12 @@ def probability_calculation(called_from_discrete):
           cprint.bold(1) + " Mindestens x\n" +
           cprint.bold(2) + " Mehr als x\n" +
           cprint.bold(3) + " Weniger als x\n" +
-          cprint.bold(4) + " Mindestens x und höchstens y\n" +
-          cprint.bold(5) + " Mehr als x und weniger als y (zwischen x und y)\n" +
-          cprint.bold(6) + " x oder y\n" +
-          cprint.bold(7) + back + "\n" +
-          cprint.bold(8) + " Hauptmenü")
+          cprint.bold(4) + " Zwischen x und y\n" +
+          cprint.bold(5) + " x oder y\n" +
+          cprint.bold(6) + back + "\n" +
+          cprint.bold(7) + " Hauptmenü")
 
-    match cinput.integer(1, 8):
+    match cinput.integer(1, 7):
         case 1:
             print("Wert x für P(X >= x) eingeben:")
             x = cinput.float_fraction()
@@ -541,27 +540,19 @@ def probability_calculation(called_from_discrete):
             x = cinput.float_fraction()
             print("Wert y für P(x <= X <= y) eingeben:")
             y = cinput.float_fraction()
-            # TODO: is resulting formula correct?
-            print("P({} <= X <= {}) =".format(x, y), cprint.yellow_bold("P(X <= {}) - P(X <= {})".format(y - 1, x)))
+            print("P({} <= X <= {}) =".format(x, y), cprint.yellow_bold("P(X <= {}) - P(X <= {})".format(y, x)))
         case 5:
-            print("Wert x für P(x < X < y) eingeben:")
-            x = cinput.float_fraction()
-            print("Wert y für P(x < X < y) eingeben:")
-            y = cinput.float_fraction()
-            # TODO: is resulting formula correct?
-            print("P({} < X < {}) =".format(x, y), cprint.yellow_bold("P(X <= {}) - P(X <= {})".format(y - 1, x)))
-        case 6:
             print("Wert x für P(X = x ∨ X = y) eingeben:")
             x = cinput.float_fraction()
             print("Wert y für P(X = x ∨ X = y) eingeben:")
             y = cinput.float_fraction()
             print("P(X = {} ∨ X = {}) =".format(x, y), cprint.yellow_bold("P(X = {}) + P(X = {})".format(x, y)))
-        case 7:
+        case 6:
             if called_from_discrete:
                 functions_probability_discrete()
             else:
                 functions_probability_continuous()
-        case 8:
+        case 7:
             menu_main()
 
 
