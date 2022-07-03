@@ -583,7 +583,7 @@ def probability_calculation(called_from_discrete):
           cprint.bold(3) + " Weniger als x\n" +
           cprint.bold(4) + " Zwischen x und y\n" +
           cprint.bold(5) + " x oder y\n" +
-          cprint.bold(6) + " \n".format(back) +
+          cprint.bold(6) + " {}\n".format(back) +
           cprint.bold(7) + " Hauptmenü")
 
     match cinput.integer(1, 7):
