@@ -271,7 +271,7 @@ def combination(elements_all=None, elements_sorted=None, elements_repetition=Non
         print("C({}, {}) = ({} über {}) =".format(n, k, n, k), cprint.yellow_bold(result))
     elif not elements_all and not elements_sorted and elements_repetition:
         result = probability_discrete.c_w(n, k)
-        print("Formel: C^W({}, {}) = (({}+{}-1) über {}) =".format(n, k, n, k, k), cprint.yellow_bold(result))
+        print("C^W({}, {}) = (({}+{}-1) über {}) =".format(n, k, n, k, k), cprint.yellow_bold(result))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " {} mit anderen Werten berechnen\n".format(name) +
