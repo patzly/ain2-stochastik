@@ -74,7 +74,7 @@ def bernoulli_distribution(p):
 
 def bernoulli_distributed(p, n):
     q = 1 - p
-    return rounded((n-1) * q * p)
+    return rounded(q**(n-1) * p)
 
 
 def bernoulli_expect(p):
