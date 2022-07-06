@@ -1,6 +1,6 @@
 # Exam Helper
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  [![Release](https://img.shields.io/github/v/release/patzly/ain2-stochastik?label=Release&logo=github)](https://github.com/patzly/ain2-stochastik/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  [![Release](https://img.shields.io/github/v/release/patzly/ain2-stochastik?label=Release)](https://github.com/patzly/ain2-stochastik/releases)
 
 Exam Helper is a German calculator for statistics and probability written in Python.
 To use it, simply [download](https://github.com/patzly/ain2-stochastik/releases) this project and open it in [PyCharm](https://www.jetbrains.com/pycharm/). Then right-click on `exam_helper.py` and select "Run".
