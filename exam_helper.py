@@ -620,20 +620,18 @@ def probability_calculation(called_from_discrete):
             menu_main()
 
 
-def menu_main(menu_code=0):
+def menu_main():
     global list1
     global list2
     list1 = None  # reset statistic lists
     list2 = None
 
-    if menu_code == 0:
-        print(cprint.blue_bold("Hauptmenü:\n") +
-              cprint.bold(1) + " Beschreibende Statistik\n" +
-              cprint.bold(2) + " Diskrete Wahrscheinlichkeitstheorie\n" +
-              cprint.bold(3) + " Kontinuierliche Wahrscheinlichkeitstheorie")
-        menu_code = cinput.integer(1, 3)
+    print(cprint.blue_bold("Hauptmenü:\n") +
+          cprint.bold(1) + " Beschreibende Statistik\n" +
+          cprint.bold(2) + " Diskrete Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(3) + " Kontinuierliche Wahrscheinlichkeitstheorie")
 
-    match menu_code:
+    match cinput.integer(1, 3):
         case 1:
             functions_statistics()
         case 2:
