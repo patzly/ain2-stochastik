@@ -253,7 +253,10 @@ def combination(elements_all=None, elements_sorted=None, elements_repetition=Non
     print("\nGesamtmenge n eingeben:")
     n = cinput.integer(0, None)
     k = 0
-    if not elements_all:
+    if not elements_all and elements_repetition:
+        print("Auswahl k eingeben:")
+        k = cinput.integer(0, None)
+    elif not elements_all:
         print("Auswahl k eingeben:")
         k = cinput.integer(0, n)
 
