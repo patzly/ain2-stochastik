@@ -15,6 +15,7 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 
+import decimal
 from utils import print_util as cprint
 
 
@@ -26,11 +27,13 @@ def invalid(msg=None):
 
 
 def rounded(n):
-    result = round(n, 3)
+    result = round(n, 10)
     if result % 1 == 0:
         return int(result)
     else:
-        return float(result)
+        normalized = decimal.Decimal(str(result)).normalize()
+        sign, digit, exponent = normalized.as_tuple()
+        return float(normalized) if exponent <= 0 else float(normalized.quantize(1))
 
 
 def string():

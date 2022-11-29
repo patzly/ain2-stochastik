@@ -27,7 +27,7 @@ list2 = None
 
 def input_list(save_in_lst1=True):
     try:
-        lst = list(map(int, cinput.string().split(" ")))
+        lst = list(map(float, cinput.string().split(" ")))
         if save_in_lst1:
             global list1
             list1 = lst
@@ -36,7 +36,7 @@ def input_list(save_in_lst1=True):
             list2 = lst
         return lst
     except ValueError:
-        cinput.invalid("Nur ganze Zahlen (getrennt durch Leerzeichen) zulässig")
+        cinput.invalid("Nur ganze Zahlen und Dezimalzahlen (getrennt durch Leerzeichen) zulässig")
         return input_list(save_in_lst1)
 
 

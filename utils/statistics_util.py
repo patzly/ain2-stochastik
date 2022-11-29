@@ -15,6 +15,7 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 
+import decimal
 import numpy as np
 import scipy.stats as stats
 import math
@@ -23,11 +24,13 @@ from statistics import multimode
 
 
 def rounded(n):
-    result = round(n, 3)
+    result = round(n, 10)
     if result % 1 == 0:
         return int(result)
     else:
-        return float(result)
+        normalized = decimal.Decimal(str(result)).normalize()
+        sign, digit, exponent = normalized.as_tuple()
+        return float(normalized) if exponent <= 0 else float(normalized.quantize(1))
 
 
 def mean(lst):
@@ -46,8 +49,10 @@ def mode(lst):
     # return max(lst, key=lst.count)
     modes = multimode(lst)
     if len(modes) == 1:
-        return modes[0]
+        return rounded(modes[0])
     else:
+        for i in range(len(modes)):
+            modes[i] = rounded(modes[i])
         return str(modes).replace("[", "").replace("]", "")
 
 
@@ -63,7 +68,7 @@ def quantile(lst, p):
     if n*p % 1 == 0:
         return rounded((lst[pn] + lst[pn+1]) / 2)
     else:
-        return lst[pn]
+        return rounded(lst[pn])
 
 
 def iqr(lst):
@@ -74,7 +79,7 @@ def iqr(lst):
 
 def span(lst):
     # Spannweite
-    return max(lst) - min(lst)
+    return rounded(max(lst) - min(lst))
 
 
 def var(lst):
