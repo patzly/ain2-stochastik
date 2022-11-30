@@ -3,7 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  [![Release](https://img.shields.io/github/v/release/patzly/ain2-stochastik?label=Release)](https://github.com/patzly/ain2-stochastik/releases)
 
 Exam Helper is a German calculator for statistics and probability written in Python.
-To use it, simply [download](https://github.com/patzly/ain2-stochastik/releases) this project and open it in [PyCharm](https://www.jetbrains.com/pycharm/). Then right-click on `exam_helper.py` and select "Run".
+To use it, simply [download](https://github.com/patzly/ain2-stochastik/releases) this project and open it in [PyCharm](https://www.jetbrains.com/pycharm/). Then right-click on `exam_helper.py` and select "Run". You might need to select/create an interpreter first.
 
 **Make sure you have uploaded the link to this repository in Moodle before the exam to be allowed to use it. In the exam, simply write down for each task that you've used Exam Helper.**
 
