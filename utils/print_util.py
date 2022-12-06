@@ -15,6 +15,8 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 
+import decimal
+
 class Colors:
     MAGENTA = '\033[95m'
     BLUE = '\033[94m'
@@ -65,3 +67,15 @@ def bold(text):
 
 def underline(text):
     return Colors.UNDERLINE + str(text) + Colors.END
+
+
+def rounded(n, decimals=10):
+    result = n
+    if decimals > -1:
+        result = round(n, decimals)
+    if result % 1 == 0:
+        return int(result)
+    else:
+        normalized = decimal.Decimal(str(result)).normalize()
+        sign, digit, exponent = normalized.as_tuple()
+        return float(normalized) if exponent <= 0 else float(normalized.quantize(1))

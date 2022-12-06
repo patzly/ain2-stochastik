@@ -15,7 +15,6 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 
-import decimal
 from utils import print_util as cprint
 
 
@@ -24,16 +23,6 @@ def invalid(msg=None):
         print(cprint.red("Ungültige Eingabe. Erneut versuchen:"))
     else:
         print(cprint.red("{}. Erneut versuchen:".format(msg)))
-
-
-def rounded(n):
-    result = round(n, 10)
-    if result % 1 == 0:
-        return int(result)
-    else:
-        normalized = decimal.Decimal(str(result)).normalize()
-        sign, digit, exponent = normalized.as_tuple()
-        return float(normalized) if exponent <= 0 else float(normalized.quantize(1))
 
 
 def string():
@@ -95,10 +84,42 @@ def float_fraction(percent_bounds=False, allow_fraction=False):
             invalid("Nur Werte von 0 bis 1 zulässig")
             return float_fraction(percent_bounds, allow_fraction)
         else:
-            return rounded(result)
+            return cprint.rounded(result, False)
     except ValueError:
         if allow_fraction:
             invalid("Nur Dezimalzahlen und Brüche zulässig")
         else:
             invalid("Nur Dezimalzahlen zulässig")
         return float_fraction(percent_bounds, allow_fraction)
+
+
+def floats_fraction(percent_bounds=False, allow_fraction=False):
+    # Prevent ValueError from being thrown when input is not a float or not in bounds
+    user = string().split(" ")
+    floats = [.0] * len(user)
+    for i in range(len(user)):
+        try:
+            if allow_fraction and "/" in user[i] and "%" not in user[i]:
+                operators = user[i].split("/")
+                if len(operators) == 2:
+                    result = float(float(operators[0].strip()) / float(operators[1].strip()))
+                else:
+                    invalid("Nur einmalige Division zulässig")
+                    return floats_fraction(percent_bounds, allow_fraction)
+            elif percent_bounds and "%" in user[i] and "/" not in user[i]:
+                pct = user[i].replace("%", "").strip()
+                result = float(pct) / 100
+            else:
+                result = float(user[i])
+            if percent_bounds and (result < 0 or result > 1):
+                invalid("Nur Werte von 0 bis 1 zulässig")
+                return floats_fraction(percent_bounds, allow_fraction)
+            else:
+                floats[i] = cprint.rounded(result, -1)
+        except TypeError:
+            if allow_fraction:
+                invalid("Nur Dezimalzahlen und Brüche zulässig")
+            else:
+                invalid("Nur Dezimalzahlen zulässig")
+            return floats_fraction(percent_bounds, allow_fraction)
+    return floats

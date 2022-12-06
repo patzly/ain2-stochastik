@@ -16,19 +16,30 @@
 #  Copyright (c) 2022 by Patrick Zedler
 import math
 from statistics import NormalDist
+from utils import print_util as cprint
 
 
-def rounded(n):
-    result = round(n, 3)
-    if result % 1 == 0:
-        return int(result)
-    else:
-        return float(result)
+def mean(lst1, lst2, decimals=-1):
+    products = [.0] * len(lst1)
+    for i in range(len(products)):
+        products[i] = lst1[i] * lst2[i]
+    return cprint.rounded(sum(products), decimals)
+
+
+def var(lst1, lst2, decimals=-1):
+    products = [.0] * len(lst1)
+    for i in range(len(products)):
+        products[i] = lst1[i]**2 * lst2[i]
+    return cprint.rounded(sum(products) - mean(lst1, lst2)**2, decimals)
+
+
+def std(lst1, lst2):
+    return cprint.rounded(math.sqrt(var(lst1, lst2, False)), decimals=3)
 
 
 def uniform_density(a, b, x):
     if a <= x <= b:
-        return rounded(1 / (b-a))
+        return cprint.rounded(1 / (b-a))
     else:
         return 0
 
@@ -37,41 +48,41 @@ def uniform_max(a, b, x):
     if x < a:
         return 0
     elif a <= x <= b:
-        return rounded((x-a) / (b-a))
+        return cprint.rounded((x-a) / (b-a))
     else:  # x > b
         return 1
 
 
 def uniform_expect(a, b):
-    return rounded((a+b) / 2)
+    return cprint.rounded((a+b) / 2)
 
 
 def uniform_var(a, b):
-    return rounded((b-a)**2 / 12)
+    return cprint.rounded((b-a)**2 / 12)
 
 
 def exponential_max(lam, x):
     if x >= 0:
-        return rounded(1 - math.e**(-lam * x))
+        return cprint.rounded(1 - math.e**(-lam * x))
     else:
         return 0
 
 
 def exponential_expect(lam):
-    return rounded(1 / lam)
+    return cprint.rounded(1 / lam)
 
 
 def exponential_var(lam):
-    return rounded(1 / lam**2)
+    return cprint.rounded(1 / lam**2)
 
 
 def normal_max(mu, sigma, x):
-    return rounded(NormalDist(mu=mu, sigma=sigma).cdf(x))
+    return cprint.rounded(NormalDist(mu=mu, sigma=sigma).cdf(x))
 
 
 def normal_expect(mu):
-    return rounded(mu)
+    return cprint.rounded(mu)
 
 
 def normal_var(sigma):
-    return rounded(sigma**2)
+    return cprint.rounded(sigma**2)
