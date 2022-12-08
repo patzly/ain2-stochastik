@@ -16,27 +16,17 @@
 #  Copyright (c) 2022 by Patrick Zedler
 
 import math
-
-
-def rounded(n, keep=False):
-    if keep:
-        result = round(n, 10)
-    else:
-        result = round(n, 3)
-    if result % 1 == 0:
-        return int(result)
-    else:
-        return float(result)
+from utils import print_util as cprint
 
 
 def fac(x):
     # Fakultät
-    return rounded(math.factorial(x))
+    return cprint.rounded(math.factorial(x))
 
 
 def binomial(n, k):
     # Binomialkoeffizient
-    return rounded(fac(n) / (fac(k) * fac(n-k)))
+    return cprint.rounded(fac(n) / (fac(k) * fac(n-k)))
 
 
 def p_n(n):
@@ -46,12 +36,12 @@ def p_n(n):
 
 def p_n_k(n, k):
     # P(n, k) = n! / (n-k)!
-    return rounded(fac(n) / fac(n-k))
+    return cprint.rounded(fac(n) / fac(n-k))
 
 
 def p_w(n, k):
     # P^W(n, k) = n^k
-    return rounded(n**k)
+    return cprint.rounded(n**k)
 
 
 def c_n_k(n, k):
@@ -65,25 +55,43 @@ def c_w(n, k):
 
 
 def laplace(n, k):
-    return rounded(k / n, True)
+    return cprint.rounded(k / n, -1)
+
+
+def mean(lst1, lst2, decimals=-1):
+    products = [.0] * len(lst1)
+    for i in range(len(products)):
+        products[i] = lst1[i] * lst2[i]
+    return cprint.rounded(sum(products), decimals)
+
+
+def var(lst1, lst2, decimals=-1):
+    products = [.0] * len(lst1)
+    for i in range(len(products)):
+        products[i] = lst1[i]**2 * lst2[i]
+    return cprint.rounded(sum(products) - mean(lst1, lst2)**2, decimals)
+
+
+def std(lst1, lst2):
+    return cprint.rounded(math.sqrt(var(lst1, lst2, False)), decimals=3)
 
 
 def bernoulli_distribution(p):
-    return [[1, p], [0, rounded(1-p)]]
+    return [[1, p], [0, cprint.rounded(1-p)]]
 
 
 def bernoulli_distributed(p, n):
     q = 1 - p
-    return rounded(q**(n-1) * p)
+    return cprint.rounded(q**(n-1) * p)
 
 
-def bernoulli_expect(p):
+def bernoulli_mean(p):
     return p
 
 
 def bernoulli_var(p):
     q = 1 - p
-    return rounded(p * q)
+    return cprint.rounded(p * q)
 
 
 def binomial_distribution(n, p):
@@ -93,14 +101,14 @@ def binomial_distribution(n, p):
     if n >= 0:
         q = 1 - p
         for t in range(0, n+1):
-            lst.append([t, rounded(binomial(n, t) * p**t * q**(n-t))])
+            lst.append([t, cprint.rounded(binomial(n, t) * p**t * q**(n-t))])
     return lst
 
 
 def binomial_distributed(n, p, x):
     if n >= 0:
         q = 1 - p
-        return rounded(binomial(n, x) * p**x * q**(n-x))
+        return cprint.rounded(binomial(n, x) * p**x * q**(n-x))
     else:
         return 0
 
@@ -112,7 +120,7 @@ def binomial_min(n, p, x):
         sigma = 0
         for k in range(math.floor(x), n + 1):
             sigma += binomial_distributed(n, p, k)
-        return rounded(sigma)
+        return cprint.rounded(sigma)
     else:  # x > n
         return 1
 
@@ -124,7 +132,7 @@ def binomial_max(n, p, x):
         sigma = 0
         for k in range(math.floor(x) + 1):
             sigma += binomial_distributed(n, p, k)
-        return rounded(sigma)
+        return cprint.rounded(sigma)
     else:  # x > n
         return 1
 
@@ -136,23 +144,23 @@ def binomial_min_max(n, p, x, y):
         sigma = 0
         for k in range(math.floor(x), math.floor(y) + 1):
             sigma += binomial_distributed(n, p, k)
-        return rounded(sigma)
+        return cprint.rounded(sigma)
     else:  # x > n
         return 1
 
 
-def binomial_expect(n, p):
-    return rounded(n * p)
+def binomial_mean(n, p):
+    return cprint.rounded(n * p)
 
 
 def binomial_var(n, p):
-    return rounded(n * p * (1 - p))
+    return cprint.rounded(n * p * (1 - p))
 
 
 def geom_distributed(p, x):
     if x >= 1:
         q = 1 - p
-        return rounded(p * q**(x - 1))
+        return cprint.rounded(p * q**(x - 1))
     else:
         return 0
 
@@ -160,22 +168,22 @@ def geom_distributed(p, x):
 def geom_max(p, x):
     if x >= 1:
         q = 1 - p
-        return rounded(1 - q**math.floor(x))
+        return cprint.rounded(1 - q**math.floor(x))
     else:
         return 0
 
 
-def geom_expect(p):
-    return rounded(1 / p)
+def geom_mean(p):
+    return cprint.rounded(1 / p)
 
 
 def geom_var(p):
-    return rounded((1 - p) / p**2)
+    return cprint.rounded((1 - p) / p**2)
 
 
 def poisson_distributed(lam, x):
     if x >= 0:
-        return rounded(lam**x / fac(x) * math.exp(-lam))
+        return cprint.rounded(lam**x / fac(x) * math.exp(-lam))
     else:
         return 0
 
@@ -185,6 +193,6 @@ def poisson_max(lam, x):
         sigma = 0
         for k in range(math.floor(x)+1):
             sigma += (lam**k / fac(k))
-        return rounded(math.exp(-lam) * sigma)
+        return cprint.rounded(math.exp(-lam) * sigma)
     else:
         return 0

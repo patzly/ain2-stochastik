@@ -84,7 +84,7 @@ def float_fraction(percent_bounds=False, allow_fraction=False):
             invalid("Nur Werte von 0 bis 1 zulässig")
             return float_fraction(percent_bounds, allow_fraction)
         else:
-            return cprint.rounded(result, False)
+            return cprint.rounded(result, -1)
     except ValueError:
         if allow_fraction:
             invalid("Nur Dezimalzahlen und Brüche zulässig")

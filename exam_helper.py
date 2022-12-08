@@ -124,7 +124,7 @@ def quantile():
         lst = list1
     print("Anteil p als Dezimalzahl oder mit % eingeben:")
     p = cinput.float_fraction(True, False)
-    print(str(statistics.rounded(p * 100)) + "%-Quantil:", cprint.yellow_bold(statistics.quantile(lst, p)))
+    print(str(cprint.rounded(p * 100)) + "%-Quantil:", cprint.yellow_bold(statistics.quantile(lst, p)))
 
 
 def corrcoef_covar():
@@ -256,7 +256,7 @@ def discrete_random_probability():
         lst1 = list1
         lst2 = list2
 
-    print("Ereignis x eingeben:")
+    print("Ereignis x für P(X = x) eingeben:")
     x = cinput.float_fraction(False, False)
     lst1_contains_x = False
     for i in range(len(lst1)):
@@ -269,7 +269,7 @@ def discrete_random_probability():
 
 
 
-def discrete_random_cumulative(calculate_max=True):
+def discrete_random_cumulative(mode):
     if list1 is None or list2 is None:
         print("Ereignisse eingeben:")
         lst1 = input_list()
@@ -279,21 +279,37 @@ def discrete_random_cumulative(calculate_max=True):
         lst1 = list1
         lst2 = list2
 
-    print("Ereignis x eingeben:")
+    if mode == "min":
+        probability = "P(X >= x)"
+    elif mode == "max":
+        probability = "P(X <= x)"
+    elif mode == "more":
+        probability = "P(X > x)"
+    elif mode == "less":
+        probability = "P(X < x)"
+    else:
+        probability = "die Berechnung der Wahrscheinlichkeit"
+    print("Ereignis x für {} eingeben:".format(probability))
     x = cinput.float_fraction(False, True)
+
     sigma = 0
     lst1_contains_x = False
     for i in range(len(lst1)):
         sigma += lst2[i]
         if lst1[i] == x:
-            if calculate_max:
+            if mode == "min":
+                sigma -= lst2[i]
+                print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x - 1), cprint.yellow_bold(cprint.rounded(1 - sigma)))
+            elif mode == "max":
                 print("P(X <= {}) =".format(x), cprint.yellow_bold(cprint.rounded(sigma)))
-            else:
-                print("1 - P(X <= {}) =".format(x), cprint.yellow_bold(cprint.rounded(1 - sigma)))
+            elif mode == "more":
+                print("P(X > {}) = 1 - P(X <= {}) =".format(x, x), cprint.yellow_bold(cprint.rounded(1 - sigma)))
+            elif mode == "less":
+                print("P(X < {}) = P(X <= {}) =".format(x, x - 1), cprint.yellow_bold(cprint.rounded(sigma)))
             lst1_contains_x = True
     if lst1_contains_x is False:
         cinput.invalid("{} kommt nicht in den Ereignissen vor".format(x))
-        discrete_random_cumulative(calculate_max)
+        discrete_random_cumulative(mode)
 
 
 def combination(elements_all=None, elements_sorted=None, elements_repetition=None):
@@ -415,36 +431,44 @@ def discrete_random_variables(jump_to_options=False):
         else:
             lst1 = list1
             lst2 = list2
-        print("Erwartungswert:", cprint.yellow_bold(probability_continuous.mean(lst1, lst2, decimals=3)))
-        print("Varianz:", cprint.yellow_bold(probability_continuous.var(lst1, lst2, decimals=3)))
-        print("Standardabweichung:", cprint.yellow_bold(probability_continuous.std(lst1, lst2)))
+        print("Erwartungswert:", cprint.yellow_bold(probability_discrete.mean(lst1, lst2, decimals=3)))
+        print("Varianz:", cprint.yellow_bold(probability_discrete.var(lst1, lst2, decimals=3)))
+        print("Standardabweichung:", cprint.yellow_bold(probability_discrete.std(lst1, lst2)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " Exakt x\n" +
-          cprint.bold(2) + " Höchstens x\n" +
-          cprint.bold(3) + " Mehr als x\n" +
-          cprint.bold(4) + " Funktion erneut verwenden\n" +
-          cprint.bold(5) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
-          cprint.bold(6) + " Hauptmenü")
-    match cinput.integer(1, 6):
+          cprint.bold(1) + " P(exakt x)\n" +
+          cprint.bold(2) + " P(mindestens x)\n" +
+          cprint.bold(3) + " P(höchstens x)\n" +
+          cprint.bold(4) + " P(mehr als x)\n" +
+          cprint.bold(5) + " P(weniger als x)\n" +
+          cprint.bold(6) + " Funktion erneut verwenden\n" +
+          cprint.bold(7) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(8) + " Hauptmenü")
+    match cinput.integer(1, 8):
         case 1:
             discrete_random_probability()
             discrete_random_variables(True)
         case 2:
-            discrete_random_cumulative(True)
+            discrete_random_cumulative("min")
             discrete_random_variables(True)
         case 3:
-            discrete_random_cumulative(False)
+            discrete_random_cumulative("max")
             discrete_random_variables(True)
         case 4:
+            discrete_random_cumulative("more")
+            discrete_random_variables(True)
+        case 5:
+            discrete_random_cumulative("less")
+            discrete_random_variables(True)
+        case 6:
             list1 = None
             list2 = None
             discrete_random_variables()
-        case 5:
+        case 7:
             list1 = None
             list2 = None
             functions_probability_discrete()
-        case 6:
+        case 8:
             menu_main()
 
 
@@ -459,7 +483,7 @@ def bernoulli_distributed(p=None):
         print(cprint.bold("Bernoulli-Verteilung: X ~ Ber({})".format(p)))
         for pair in probability_discrete.bernoulli_distribution(p):
             print("P(X = {}) =".format(pair[0]), cprint.yellow_bold(pair[1]))
-        print("E[X] =", cprint.yellow_bold(probability_discrete.bernoulli_expect(p)))
+        print("E[X] =", cprint.yellow_bold(probability_discrete.bernoulli_mean(p)))
         print("Var[X] =", cprint.yellow_bold(probability_discrete.bernoulli_var(p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
@@ -496,7 +520,7 @@ def binomial_distributed(n=None, p=None):
         print(cprint.bold("Binomial-Verteilung: X ~ Bin({}, {})".format(n, p)))
         for pair in probability_discrete.binomial_distribution(n, p):
             print("P(X = {}) =".format(pair[0]), cprint.yellow_bold(pair[1]))
-        print("E[X] =", cprint.yellow_bold(probability_discrete.binomial_expect(n, p)))
+        print("E[X] =", cprint.yellow_bold(probability_discrete.binomial_mean(n, p)))
         print("Var[X] =", cprint.yellow_bold(probability_discrete.binomial_var(n, p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
@@ -549,7 +573,7 @@ def geom_distributed(p=None):
 
     if not jump_to_options:
         print(cprint.bold("Geometrische Verteilung: X ~ geom({})".format(p)))
-        print("E[X] =", cprint.yellow_bold(probability_discrete.geom_expect(p)))
+        print("E[X] =", cprint.yellow_bold(probability_discrete.geom_mean(p)))
         print("Var[X] =", cprint.yellow_bold(probability_discrete.geom_var(p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
@@ -628,7 +652,7 @@ def uniform_distributed(a=None, b=None):
 
     if not jump_to_options:
         print(cprint.bold("Gleichverteilung: X ~ U({}, {})".format(a, b)))
-        print("E[X] =", cprint.yellow_bold(probability_continuous.uniform_expect(a, b)))
+        print("E[X] =", cprint.yellow_bold(probability_continuous.uniform_mean(a, b)))
         print("Var[X] =", cprint.yellow_bold(probability_continuous.uniform_var(a, b)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
@@ -660,7 +684,7 @@ def exponential_distributed(lam=None):
 
     if not jump_to_options:
         print(cprint.bold("Exponentialverteilung: X ~ exp({})".format(lam)))
-        print("E[X] =", cprint.yellow_bold(probability_continuous.exponential_expect(lam)))
+        print("E[X] =", cprint.yellow_bold(probability_continuous.exponential_mean(lam)))
         print("Var[X] =", cprint.yellow_bold(probability_continuous.exponential_var(lam)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
@@ -696,7 +720,7 @@ def normal_distributed(mu=None, sigma=None):
 
     if not jump_to_options:
         print(cprint.bold("Normalverteilung: X ~ N({}, {})".format(mu, sigma)))
-        print("E[X] =", cprint.yellow_bold(probability_continuous.normal_expect(mu)))
+        print("E[X] =", cprint.yellow_bold(probability_continuous.normal_mean(mu)))
         print("Var[X] =", cprint.yellow_bold(probability_continuous.normal_var(sigma)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
@@ -737,7 +761,7 @@ def probability_calculation(called_from_discrete):
 
     match cinput.integer(1, 8):
         case 1:
-            print("Wert x für P(X >= x) eingeben:")
+            print("Ereignis x für P(X >= x) eingeben:")
             x = cinput.float_fraction()
             print("P(X >= {}) =".format(x), cprint.yellow_bold("1 - P(X <= {})".format(x - 1)))
         case 2:
@@ -934,6 +958,6 @@ def functions_probability_continuous(func_code=0):
             menu_main()
 
 
-print("Exam Helper v1.1.0")
+print("Exam Helper v1.1.1")
 print(cprint.yellow("Viel Erfolg!\n"))
 menu_main()

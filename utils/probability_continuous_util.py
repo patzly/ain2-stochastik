@@ -19,24 +19,6 @@ from statistics import NormalDist
 from utils import print_util as cprint
 
 
-def mean(lst1, lst2, decimals=-1):
-    products = [.0] * len(lst1)
-    for i in range(len(products)):
-        products[i] = lst1[i] * lst2[i]
-    return cprint.rounded(sum(products), decimals)
-
-
-def var(lst1, lst2, decimals=-1):
-    products = [.0] * len(lst1)
-    for i in range(len(products)):
-        products[i] = lst1[i]**2 * lst2[i]
-    return cprint.rounded(sum(products) - mean(lst1, lst2)**2, decimals)
-
-
-def std(lst1, lst2):
-    return cprint.rounded(math.sqrt(var(lst1, lst2, False)), decimals=3)
-
-
 def uniform_density(a, b, x):
     if a <= x <= b:
         return cprint.rounded(1 / (b-a))
@@ -53,7 +35,7 @@ def uniform_max(a, b, x):
         return 1
 
 
-def uniform_expect(a, b):
+def uniform_mean(a, b):
     return cprint.rounded((a+b) / 2)
 
 
@@ -68,7 +50,7 @@ def exponential_max(lam, x):
         return 0
 
 
-def exponential_expect(lam):
+def exponential_mean(lam):
     return cprint.rounded(1 / lam)
 
 
@@ -80,7 +62,7 @@ def normal_max(mu, sigma, x):
     return cprint.rounded(NormalDist(mu=mu, sigma=sigma).cdf(x))
 
 
-def normal_expect(mu):
+def normal_mean(mu):
     return cprint.rounded(mu)
 
 
