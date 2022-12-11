@@ -58,6 +58,22 @@ def laplace(n, k):
     return cprint.rounded(k / n, -1)
 
 
+def pdf(lst1, lst2, x):
+    for i in range(len(lst1)):
+        if lst1[i] == x:
+            return cprint.rounded(lst2[i])
+    return 0
+
+
+def cdf(lst1, lst2, x):
+    sigma = 0
+    for i in range(len(lst1)):
+        sigma += lst2[i]
+        if lst1[i] == x:
+            return cprint.rounded(sigma)
+    return 0
+
+
 def mean(lst1, lst2, decimals=-1):
     products = [.0] * len(lst1)
     for i in range(len(products)):
@@ -76,13 +92,24 @@ def std(lst1, lst2):
     return cprint.rounded(math.sqrt(var(lst1, lst2, False)), decimals=3)
 
 
-def bernoulli_distribution(p):
-    return [[1, p], [0, cprint.rounded(1-p)]]
+def bernoulli_pdf(p, x):
+    if x == 0:
+        return p
+    elif x == 1:
+        q = 1 - p
+        return q
+    else:
+        return 0
 
 
-def bernoulli_distributed(p, n):
-    q = 1 - p
-    return cprint.rounded(q**(n-1) * p)
+def bernoulli_cdf(p, x):
+    if x < 0:
+        return 0
+    elif x <= 0 < 1:
+        q = 1 - p
+        return q
+    else:
+        return 1
 
 
 def bernoulli_mean(p):
@@ -94,70 +121,7 @@ def bernoulli_var(p):
     return cprint.rounded(p * q)
 
 
-def binomial_distribution(n, p):
-    # returns array with all binomial distributed values for 0 to n
-    # the first element represent the possible k values
-    lst = []
-    if n >= 0:
-        q = 1 - p
-        for t in range(0, n+1):
-            lst.append([t, cprint.rounded(binomial(n, t) * p**t * q**(n-t))])
-    return lst
-
-
-def binomial_distributed(n, p, x):
-    if n >= 0:
-        q = 1 - p
-        return cprint.rounded(binomial(n, x) * p**x * q**(n-x))
-    else:
-        return 0
-
-
-def binomial_min(n, p, x):
-    if x < 0:
-        return 0
-    elif 0 <= x <= n:
-        sigma = 0
-        for k in range(math.floor(x), n + 1):
-            sigma += binomial_distributed(n, p, k)
-        return cprint.rounded(sigma)
-    else:  # x > n
-        return 1
-
-
-def binomial_max(n, p, x):
-    if x < 0:
-        return 0
-    elif 0 <= x <= n:
-        sigma = 0
-        for k in range(math.floor(x) + 1):
-            sigma += binomial_distributed(n, p, k)
-        return cprint.rounded(sigma)
-    else:  # x > n
-        return 1
-
-
-def binomial_min_max(n, p, x, y):
-    if x < 0:
-        return 0
-    elif 0 <= x <= n:
-        sigma = 0
-        for k in range(math.floor(x), math.floor(y) + 1):
-            sigma += binomial_distributed(n, p, k)
-        return cprint.rounded(sigma)
-    else:  # x > n
-        return 1
-
-
-def binomial_mean(n, p):
-    return cprint.rounded(n * p)
-
-
-def binomial_var(n, p):
-    return cprint.rounded(n * p * (1 - p))
-
-
-def geom_distributed(p, x):
+def geom_pdf(p, x):
     if x >= 1:
         q = 1 - p
         return cprint.rounded(p * q**(x - 1))
@@ -165,7 +129,7 @@ def geom_distributed(p, x):
         return 0
 
 
-def geom_max(p, x):
+def geom_cdf(p, x):
     if x >= 1:
         q = 1 - p
         return cprint.rounded(1 - q**math.floor(x))
@@ -181,14 +145,53 @@ def geom_var(p):
     return cprint.rounded((1 - p) / p**2)
 
 
-def poisson_distributed(lam, x):
+def binomial_distribution(n, p):
+    # returns array with all binomial distributed values for 0 to n
+    # the first element represent the possible k values
+    lst = []
+    if n >= 0:
+        q = 1 - p
+        for t in range(0, n+1):
+            lst.append([t, cprint.rounded(binomial(n, t) * p**t * q**(n-t))])
+    return lst
+
+
+def binomial_pdf(n, p, x):
+    if n >= 0:
+        q = 1 - p
+        return cprint.rounded(binomial(n, x) * p**x * q**(n-x))
+    else:
+        return 0
+
+
+def binomial_cdf(n, p, x):
+    if x < 0:
+        return 0
+    elif 0 <= x <= n:
+        sigma = 0
+        for k in range(math.floor(x) + 1):
+            sigma += binomial_pdf(n, p, k)
+        return cprint.rounded(sigma)
+    else:  # x > n
+        return 1
+
+
+def binomial_mean(n, p):
+    return cprint.rounded(n * p)
+
+
+def binomial_var(n, p):
+    return cprint.rounded(n * p * (1 - p))
+
+
+def poisson_pdf(lam, x):
     if x >= 0:
         return cprint.rounded(lam**x / fac(x) * math.exp(-lam))
     else:
         return 0
 
 
-def poisson_max(lam, x):
+def poisson_cdf(lam, x):
     if x >= 0:
         sigma = 0
         for k in range(math.floor(x)+1):
