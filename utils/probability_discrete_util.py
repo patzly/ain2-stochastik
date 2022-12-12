@@ -121,6 +121,10 @@ def bernoulli_var(p):
     return cprint.rounded(p * q)
 
 
+def bernoulli_std(p):
+    return cprint.rounded(math.sqrt(bernoulli_var(p)), decimals=4)
+
+
 def geom_pdf(p, x):
     if x >= 1:
         q = 1 - p
@@ -143,6 +147,10 @@ def geom_mean(p):
 
 def geom_var(p):
     return cprint.rounded((1 - p) / p**2)
+
+
+def geom_std(p):
+    return cprint.rounded(math.sqrt(geom_var(p)), decimals=4)
 
 
 def binomial_distribution(n, p):
@@ -184,9 +192,13 @@ def binomial_var(n, p):
     return cprint.rounded(n * p * (1 - p))
 
 
+def binomial_std(n, p):
+    return cprint.rounded(math.sqrt(binomial_var(n, p)), decimals=4)
+
+
 def poisson_pdf(lam, x):
     if x >= 0:
-        return cprint.rounded(lam**x / fac(x) * math.exp(-lam))
+        return cprint.rounded((lam**x / fac(x)) * math.exp(-lam))
     else:
         return 0
 
@@ -194,8 +206,12 @@ def poisson_pdf(lam, x):
 def poisson_cdf(lam, x):
     if x >= 0:
         sigma = 0
-        for k in range(math.floor(x)+1):
-            sigma += (lam**k / fac(k))
+        for k in range(math.floor(x) + 1):
+            sigma += lam**k / fac(k)
         return cprint.rounded(math.exp(-lam) * sigma)
     else:
         return 0
+
+
+def poisson_std(lam):
+    return cprint.rounded(math.sqrt(lam), decimals=4)
