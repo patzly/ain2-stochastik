@@ -89,7 +89,7 @@ def var(lst1, lst2, decimals=-1):
 
 
 def std(lst1, lst2):
-    return cprint.rounded(math.sqrt(var(lst1, lst2, False)), decimals=3)
+    return cprint.rounded(math.sqrt(var(lst1, lst2, -1)), decimals=4)
 
 
 def bernoulli_pdf(p, x):
