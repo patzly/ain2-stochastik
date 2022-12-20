@@ -74,16 +74,16 @@ def cdf(lst1, lst2, x):
 
 
 def mean(lst1, lst2):
-    products = [.0] * len(lst1)
-    for i in range(len(products)):
-        products[i] = lst1[i] * lst2[i]
+    products = []
+    for i in range(len(lst1)):
+        products.append(float(lst1[i] * lst2[i]))
     return sum(products)
 
 
 def var(lst1, lst2):
-    products = [.0] * len(lst1)
-    for i in range(len(products)):
-        products[i] = lst1[i]**2 * lst2[i]
+    products = []
+    for i in range(len(lst1)):
+        products.append(float(lst1[i]**2 * lst2[i]))
     return sum(products) - mean(lst1, lst2)**2
 
 
