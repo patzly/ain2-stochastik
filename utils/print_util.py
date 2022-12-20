@@ -15,8 +15,6 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 
-import decimal
-
 class Colors:
     MAGENTA = '\033[95m'
     BLUE = '\033[94m'
@@ -57,6 +55,10 @@ def yellow_bold(text):
     return bold(yellow(text))
 
 
+def yellow_bold_rounded(n):
+    return bold(yellow(rounded(n)))
+
+
 def red(text):
     return Colors.RED + str(text) + Colors.END
 
@@ -69,13 +71,24 @@ def underline(text):
     return Colors.UNDERLINE + str(text) + Colors.END
 
 
-def rounded(n, decimals=10):
-    result = n
-    if decimals > -1:
-        result = round(n, decimals)
-    if result % 1 == 0:
-        return int(result)
+def rounded(n):
+    if n % 1 == 0:
+        return str(int(n))
     else:
-        normalized = decimal.Decimal(str(result)).normalize()
-        sign, digit, exponent = normalized.as_tuple()
-        return float(normalized) if exponent <= 0 else float(normalized.quantize(1))
+        number_long = round(n, 100)
+        decimals = '{:.100f}'.format(n)[len(str(int(n))) + 1:]
+        index_start_not_zero = 0
+        for i in range(len(decimals)):
+            if decimals[i] != "0":
+                index_start_not_zero = i
+                break
+        number_short = round(n, index_start_not_zero + 3)
+        if int(number_long) != int(number_short):
+            return rounded(number_short)
+        string = ("{:." + str(index_start_not_zero + 3) + "f}").format(n)
+        index_end_not_zero = len(string)
+        for i in range(len(string) - 1, 1, -1):
+            if string[i] != "0":
+                index_end_not_zero = i
+                break
+        return string[:index_end_not_zero + 1]

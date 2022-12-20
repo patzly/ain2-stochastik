@@ -15,7 +15,6 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 
-import decimal
 import numpy as np
 import scipy.stats as stats
 import math
@@ -27,12 +26,12 @@ from utils import print_util as cprint
 def mean(lst):
     # Arithmetisches Mittel
     # return np.mean(lst)
-    return cprint.rounded(sum(lst) / len(lst))
+    return sum(lst) / len(lst)
 
 
 def median(lst):
     # Median
-    return cprint.rounded(np.median(lst))
+    return np.median(lst)
 
 
 def mode(lst):
@@ -40,11 +39,11 @@ def mode(lst):
     # return max(lst, key=lst.count)
     modes = multimode(lst)
     if len(modes) == 1:
-        return cprint.rounded(modes[0])
+        return modes[0]
     else:
         for i in range(len(modes)):
             modes[i] = cprint.rounded(modes[i])
-        return str(modes).replace("[", "").replace("]", "")
+        return str(modes).replace("[", "").replace("]", "").replace("'", "")
 
 
 def quantile(lst, p):
@@ -57,20 +56,20 @@ def quantile(lst, p):
     n = len(lst)
     pn = int(math.ceil(n*p))-1  # start from first element (np index start is 1)
     if n*p % 1 == 0:
-        return cprint.rounded((lst[pn] + lst[pn+1]) / 2)
+        return (lst[pn] + lst[pn+1]) / 2
     else:
-        return cprint.rounded(lst[pn])
+        return lst[pn]
 
 
 def iqr(lst):
     # Interquartilabstand
     # stats.iqr(lst)
-    return cprint.rounded(quantile(lst, 0.75) - quantile(lst, 0.25))
+    return quantile(lst, 0.75) - quantile(lst, 0.25)
 
 
 def span(lst):
     # Spannweite
-    return cprint.rounded(max(lst) - min(lst))
+    return max(lst) - min(lst)
 
 
 def var(lst):
@@ -80,15 +79,15 @@ def var(lst):
     n = len(lst)
     sigma = 0
     for i in lst:
-        sigma += (i-mean(lst))**2
-    return cprint.rounded(1/(n-1) * sigma)
+        sigma += (i - mean(lst))**2
+    return 1 / (n - 1) * sigma
 
 
 def std(lst):
     # Empirische Standardabweichung
     # Formel aus der Vorlesung
     # return np.std(lst, ddof=1)
-    return cprint.rounded(math.sqrt(var(lst)))
+    return math.sqrt(var(lst))
 
 
 def covar(lst1, lst2):
@@ -98,7 +97,7 @@ def covar(lst1, lst2):
     for i in range(0, n):
         sigma += (lst1[i] - mean(lst1)) * (lst2[i] - mean(lst2))
     covariance = (1 / (n - 1)) * sigma
-    return cprint.rounded(covariance)
+    return covariance
 
 
 def corrcoef(lst1, lst2):
@@ -106,12 +105,12 @@ def corrcoef(lst1, lst2):
     # return stats.pearsonr(lst1, lst2)[0]
     # return np.corrcoef(lst1, lst2) not working as expected
     coefficient = covar(lst1, lst2) / (std(lst1) * std(lst2))
-    return cprint.rounded(coefficient)
+    return coefficient
 
 
 def det(lst1, lst2):
     # Bestimmheitsmaß
-    return cprint.rounded(corrcoef(lst1, lst2)**2)
+    return corrcoef(lst1, lst2)**2
 
 
 def plot_lin_regress(lst1, lst2, lbl_x, lbl_y):

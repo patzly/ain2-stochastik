@@ -16,12 +16,11 @@
 #  Copyright (c) 2022 by Patrick Zedler
 import math
 from statistics import NormalDist
-from utils import print_util as cprint
 
 
 def uniform_density(a, b, x):
     if a <= x <= b:
-        return cprint.rounded(1 / (b-a))
+        return 1 / (b-a)
     else:
         return 0
 
@@ -30,41 +29,41 @@ def uniform_max(a, b, x):
     if x < a:
         return 0
     elif a <= x <= b:
-        return cprint.rounded((x-a) / (b-a))
+        return (x-a) / (b-a)
     else:  # x > b
         return 1
 
 
 def uniform_mean(a, b):
-    return cprint.rounded((a+b) / 2)
+    return (a+b) / 2
 
 
 def uniform_var(a, b):
-    return cprint.rounded((b-a)**2 / 12)
+    return (b-a)**2 / 12
 
 
 def exponential_max(lam, x):
     if x >= 0:
-        return cprint.rounded(1 - math.e**(-lam * x))
+        return 1 - math.e**(-lam * x)
     else:
         return 0
 
 
 def exponential_mean(lam):
-    return cprint.rounded(1 / lam)
+    return 1 / lam
 
 
 def exponential_var(lam):
-    return cprint.rounded(1 / lam**2)
+    return 1 / lam**2
 
 
 def normal_max(mu, sigma, x):
-    return cprint.rounded(NormalDist(mu=mu, sigma=sigma).cdf(x))
+    return NormalDist(mu=mu, sigma=sigma).cdf(x)
 
 
 def normal_mean(mu):
-    return cprint.rounded(mu)
+    return mu
 
 
 def normal_var(sigma):
-    return cprint.rounded(sigma**2)
+    return sigma**2

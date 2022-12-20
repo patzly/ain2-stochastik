@@ -28,8 +28,6 @@ list2 = None
 def input_list(save_in_lst1=True):
     try:
         lst = list(map(float, cinput.string().split(" ")))
-        for i in range(len(lst)):
-            lst[i] = cprint.rounded(lst[i], -1)
         if save_in_lst1:
             global list1
             list1 = lst
@@ -75,20 +73,20 @@ def mean_median_mode_quartile_iqr_span_var_std(jump_to_options=False):
         else:
             lst = list1
 
-        print("Arithmetisches Mittel:", cprint.yellow_bold(statistics.mean(lst)))
-        print("Median:", cprint.yellow_bold(statistics.median(lst)))
+        print("Arithmetisches Mittel:", cprint.yellow_bold_rounded(statistics.mean(lst)))
+        print("Median:", cprint.yellow_bold_rounded(statistics.median(lst)))
         mode = statistics.mode(lst)
-        if isinstance(mode, list) and len(lst) > 1:
+        if "," in mode:
             print("Modalwerte:", cprint.yellow_bold(mode))
         else:
             print("Modalwert:", cprint.yellow_bold(mode))
-        print("25%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.25)))
-        print("50%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.50)))
-        print("75%-Quartil:", cprint.yellow_bold(statistics.quantile(lst, 0.75)))
-        print("Interquartilabstand:", cprint.yellow_bold(statistics.iqr(lst)))
-        print("Spannweite:", cprint.yellow_bold(statistics.span(lst)))
-        print("Empirische Varianz:", cprint.yellow_bold(statistics.var(lst)))
-        print("Empirische Standardabweichung:", cprint.yellow_bold(statistics.std(lst)))
+        print("25%-Quartil:", cprint.yellow_bold_rounded(statistics.quantile(lst, 0.25)))
+        print("50%-Quartil:", cprint.yellow_bold_rounded(statistics.quantile(lst, 0.50)))
+        print("75%-Quartil:", cprint.yellow_bold_rounded(statistics.quantile(lst, 0.75)))
+        print("Interquartilabstand:", cprint.yellow_bold_rounded(statistics.iqr(lst)))
+        print("Spannweite:", cprint.yellow_bold_rounded(statistics.span(lst)))
+        print("Empirische Varianz:", cprint.yellow_bold_rounded(statistics.var(lst)))
+        print("Empirische Standardabweichung:", cprint.yellow_bold_rounded(statistics.std(lst)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " Anderes Quantil ausrechnen\n" +
@@ -124,7 +122,7 @@ def quantile():
         lst = list1
     print("Anteil p als Dezimalzahl oder mit % eingeben:")
     p = cinput.float_fraction(True, False)
-    print(str(cprint.rounded(p * 100)) + "%-Quantil:", cprint.yellow_bold(statistics.quantile(lst, p)))
+    print(cprint.rounded(p * 100) + "%-Quantil:", cprint.yellow_bold_rounded(statistics.quantile(lst, p)))
 
 
 def corrcoef_covar():
@@ -136,8 +134,8 @@ def corrcoef_covar():
     else:
         lst1 = list1
         lst2 = list2
-    print("Empirischer Korrelationskoeffizient:", cprint.yellow_bold(statistics.corrcoef(lst1, lst2)))
-    print("Empirische Kovarianz:", cprint.yellow_bold(statistics.covar(lst1, lst2)))
+    print("Empirischer Korrelationskoeffizient:", cprint.yellow_bold_rounded(statistics.corrcoef(lst1, lst2)))
+    print("Empirische Kovarianz:", cprint.yellow_bold_rounded(statistics.covar(lst1, lst2)))
 
 
 def det():
@@ -149,7 +147,7 @@ def det():
     else:
         lst1 = list1
         lst2 = list2
-    print("Bestimmtheitsmaß:", cprint.yellow_bold(statistics.det(lst1, lst2)))
+    print("Bestimmtheitsmaß:", cprint.yellow_bold_rounded(statistics.det(lst1, lst2)))
 
 
 def plot_lin_regress():
@@ -324,7 +322,7 @@ def laplace():
     n = cinput.integer(1, None)
 
     print(cprint.bold("Laplace-Experiment:"))
-    print("P(Ereignis) = {}/{} =".format(k, n), cprint.yellow_bold(probability_discrete.laplace(n, k)))
+    print("P(Ereignis) = {}/{} =".format(k, n), cprint.yellow_bold_rounded(probability_discrete.laplace(n, k)))
 
 
 def discrete_random_variables(jump_to_options=False):
@@ -340,9 +338,9 @@ def discrete_random_variables(jump_to_options=False):
         else:
             lst1 = list1
             lst2 = list2
-        print("E(X) =", cprint.yellow_bold(probability_discrete.mean(lst1, lst2, decimals=3)))
-        print("Var(X) =", cprint.yellow_bold(probability_discrete.var(lst1, lst2, decimals=3)))
-        print("Std(X) =", cprint.yellow_bold(probability_discrete.std(lst1, lst2)))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_discrete.mean(lst1, lst2)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_discrete.var(lst1, lst2)))
+        print("Std(X) =", cprint.yellow_bold_rounded(probability_discrete.std(lst1, lst2)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " P(genau x)\n" +
@@ -356,31 +354,31 @@ def discrete_random_variables(jump_to_options=False):
     match cinput.integer(1, 8):
         case 1:
             print("Anzahl erfolgreicher Versuche x für P(X = x) eingeben:")
-            x = cinput.float_fraction(False, False)
-            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.pdf(list1, list2, x)))
+            x = cinput.integer(0, None)
+            print("P(X = {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.pdf(list1, list2, x)))
             discrete_random_variables(True)
         case 2:
             print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
-            x = cinput.float_fraction(False, False)
+            x = cinput.integer(0, None)
             print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x - 1),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.cdf(list1, list2, x - 1))))
+                  cprint.yellow_bold_rounded(1 - probability_discrete.cdf(list1, list2, x - 1)))
             discrete_random_variables(True)
         case 3:
             print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
-            x = cinput.float_fraction(False, False)
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.cdf(list1, list2, x)))
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.cdf(list1, list2, x)))
             discrete_random_variables(True)
         case 4:
             print("Anzahl erfolgreicher Versuche x für P(X > x) eingeben:")
-            x = cinput.float_fraction(False, False)
+            x = cinput.integer(0, None)
             print("P(X > {}) = 1 - P(X <= {}) =".format(x, x),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.cdf(list1, list2, x))))
+                  cprint.yellow_bold_rounded(1 - probability_discrete.cdf(list1, list2, x)))
             discrete_random_variables(True)
         case 5:
             print("Anzahl erfolgreicher Versuche x für P(X < x) eingeben:")
-            x = cinput.float_fraction(False, False)
+            x = cinput.integer(0, None)
             print("P(X < {}) = P(X <= {}) =".format(x, x - 1),
-                  cprint.yellow_bold(probability_discrete.cdf(list1, list2, x - 1)))
+                  cprint.yellow_bold_rounded(probability_discrete.cdf(list1, list2, x - 1)))
             discrete_random_variables(True)
         case 6:
             list1 = None
@@ -398,12 +396,12 @@ def bernoulli_distributed(p=None):
     if p is None:
         print("Erfolgswahrscheinlichkeit p als Bruch, Dezimalzahl oder in Prozent eingeben:")
         p = cinput.float_fraction(True, True)
-        print(cprint.bold("Bernoulli-Verteilung: X ~ Ber({})".format(p)))
-        print("P(X = 0) =", cprint.yellow_bold(probability_discrete.bernoulli_pdf(p, 0)))
-        print("P(X = 1) =", cprint.yellow_bold(probability_discrete.bernoulli_pdf(p, 1)))
-        print("E(X) =", cprint.yellow_bold(probability_discrete.bernoulli_mean(p)))
-        print("Var(X) =", cprint.yellow_bold(probability_discrete.bernoulli_var(p)))
-        print("Std(X) =", cprint.yellow_bold(probability_discrete.bernoulli_std(p)))
+        print(cprint.bold("Bernoulli-Verteilung: X ~ Ber({})".format(cprint.rounded(p))))
+        print("P(X = 0) =", cprint.yellow_bold_rounded(probability_discrete.bernoulli_pdf(p, 0)))
+        print("P(X = 1) =", cprint.yellow_bold_rounded(probability_discrete.bernoulli_pdf(p, 1)))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_discrete.bernoulli_mean(p)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_discrete.bernoulli_var(p)))
+        print("Std(X) =", cprint.yellow_bold_rounded(probability_discrete.bernoulli_std(p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " P(genau x)\n" +
@@ -418,31 +416,31 @@ def bernoulli_distributed(p=None):
     match cinput.integer(1, 8):
         case 1:
             print("Anzahl erfolgreicher Versuche x für P(X = x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.bernoulli_pdf(p, x)))
+            x = cinput.integer(0, None)
+            print("P(X = {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.bernoulli_pdf(p, x)))
             bernoulli_distributed(p)
         case 2:
             print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
-            x = cinput.float_fraction()
+            x = cinput.integer(0, None)
             print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x - 1),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.bernoulli_cdf(p, x - 1))))
+                  cprint.yellow_bold_rounded(1 - probability_discrete.bernoulli_cdf(p, x - 1)))
             bernoulli_distributed(p)
         case 3:
             print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.bernoulli_cdf(p, x)))
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.bernoulli_cdf(p, x)))
             bernoulli_distributed(p)
         case 4:
             print("Anzahl erfolgreicher Versuche x für P(X > x) eingeben:")
-            x = cinput.float_fraction()
+            x = cinput.integer(0, None)
             print("P(X > {}) = 1 - P(X <= {}) =".format(x, x),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.bernoulli_cdf(p, x))))
+                  cprint.yellow_bold_rounded(1 - probability_discrete.bernoulli_cdf(p, x)))
             bernoulli_distributed(p)
         case 5:
             print("Anzahl erfolgreicher Versuche x für P(X < x) eingeben:")
-            x = cinput.float_fraction()
+            x = cinput.integer(0, None)
             print("P(X < {}) = P(X <= {}) =".format(x, x - 1),
-                  cprint.yellow_bold(probability_discrete.bernoulli_cdf(p, x - 1)))
+                  cprint.yellow_bold_rounded(probability_discrete.bernoulli_cdf(p, x - 1)))
             bernoulli_distributed(p)
         case 6:
             bernoulli_distributed()
@@ -460,10 +458,10 @@ def geom_distributed(p=None):
         p = cinput.float_fraction(True, True)
 
     if not jump_to_options:
-        print(cprint.bold("Geometrische Verteilung: X ~ geom({})".format(p)))
-        print("E(X) =", cprint.yellow_bold(probability_discrete.geom_mean(p)))
-        print("Var(X) =", cprint.yellow_bold(probability_discrete.geom_var(p)))
-        print("Std(X) =", cprint.yellow_bold(probability_discrete.geom_std(p)))
+        print(cprint.bold("Geometrische Verteilung: X ~ geom({})".format(cprint.rounded(p))))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_discrete.geom_mean(p)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_discrete.geom_var(p)))
+        print("Std(X) =", cprint.yellow_bold_rounded(probability_discrete.geom_std(p)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " P(genau x)\n" +
@@ -478,31 +476,31 @@ def geom_distributed(p=None):
     match cinput.integer(1, 8):
         case 1:
             print("Anzahl erfolgreicher Versuche x für P(X = x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.geom_pdf(p, x)))
+            x = cinput.integer(0, None)
+            print("P(X = {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.geom_pdf(p, x)))
             geom_distributed(p)
         case 2:
             print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
-            x = cinput.float_fraction()
+            x = cinput.integer(0, None)
             print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x - 1),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.geom_cdf(p, x - 1))))
+                  cprint.yellow_bold_rounded(1 - probability_discrete.geom_cdf(p, x - 1)))
             geom_distributed(p)
         case 3:
             print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.geom_cdf(p, x)))
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.geom_cdf(p, x)))
             geom_distributed(p)
         case 4:
             print("Anzahl erfolgreicher Versuche x für P(X > x) eingeben:")
-            x = cinput.float_fraction()
+            x = cinput.integer(0, None)
             print("P(X > {}) = 1 - P(X <= {}) =".format(x, x),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.geom_cdf(p, x))))
+                  cprint.yellow_bold_rounded(1 - probability_discrete.geom_cdf(p, x)))
             geom_distributed(p)
         case 5:
             print("Anzahl erfolgreicher Versuche x für P(X < x) eingeben:")
-            x = cinput.float_fraction()
+            x = cinput.integer(0, None)
             print("P(X < {}) = P(X <= {}) =".format(x, x - 1),
-                  cprint.yellow_bold(probability_discrete.geom_cdf(p, x - 1)))
+                  cprint.yellow_bold_rounded(probability_discrete.geom_cdf(p, x - 1)))
             geom_distributed(p)
         case 6:
             geom_distributed()
@@ -517,18 +515,81 @@ def binomial_distributed(n=None, p=None):
 
     if n is None:
         print("Anzahl Versuche n eingeben:")
-        n = int(input())
+        n = cinput.integer(0, None)
     if p is None:
         print("Wahrscheinlichkeit p als Bruch, Dezimalzahl oder in Prozent eingeben:")
         p = cinput.float_fraction(True, True)
 
     if not jump_to_options:
-        print(cprint.bold("Binomialverteilung: X ~ Bin({}, {})".format(n, p)))
-        # for pair in probability_discrete.binomial_distribution(n, p):
-        #    print("P(X = {}) =".format(pair[0]), cprint.yellow_bold(pair[1]))
-        print("E(X) =", cprint.yellow_bold(probability_discrete.binomial_mean(n, p)))
-        print("Var(X) =", cprint.yellow_bold(probability_discrete.binomial_var(n, p)))
-        print("Std(X) =", cprint.yellow_bold(probability_discrete.binomial_std(n, p)))
+        print(cprint.bold("Binomialverteilung: X ~ Bin({}, {})".format(n, cprint.rounded(p))))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_discrete.binomial_mean(n, p)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_discrete.binomial_var(n, p)))
+        print("Std(X) =", cprint.yellow_bold_rounded(probability_discrete.binomial_std(n, p)))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " P(genau x)\n" +
+          cprint.bold(2) + " P(mindestens x)\n" +
+          cprint.bold(3) + " P(höchstens x)\n" +
+          cprint.bold(4) + " P(mehr als x)\n" +
+          cprint.bold(5) + " P(weniger als x)\n" +
+          cprint.bold(6) + " Verteilung anzeigen\n" +
+          cprint.bold(7) + " Funktion erneut verwenden\n" +
+          cprint.bold(8) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(9) + " Hauptmenü")
+
+    match cinput.integer(1, 9):
+        case 1:
+            print("Anzahl erfolgreicher Versuche x für P(X = x) eingeben:")
+            x = cinput.integer(0, n)
+            print("P(X = {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.binomial_pdf(n, p, x)))
+            binomial_distributed(n, p)
+        case 2:
+            print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X >= {}) =".format(x),
+                  cprint.yellow_bold_rounded(1 - probability_discrete.binomial_cdf(n, p, x - 1)))
+            binomial_distributed(n, p)
+        case 3:
+            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.binomial_cdf(n, p, x)))
+            binomial_distributed(n, p)
+        case 4:
+            print("Anzahl erfolgreicher Versuche x für P(X > x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X > {}) = 1 - P(X <= {}) =".format(x, x),
+                  cprint.yellow_bold_rounded(1 - probability_discrete.binomial_cdf(n, p, x)))
+            binomial_distributed(n, p)
+        case 5:
+            print("Anzahl erfolgreicher Versuche x für P(X < x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X < {}) = P(X <= {}) =".format(x, x - 1),
+                  cprint.yellow_bold_rounded(probability_discrete.binomial_cdf(n, p, x - 1)))
+            binomial_distributed(n, p)
+        case 6:
+            for t in range(0, n + 1):
+                print("P(X = {}) =".format(t), cprint.yellow_bold_rounded(probability_discrete.binomial_pdf(n, p, t)))
+            binomial_distributed(n, p)
+        case 7:
+            binomial_distributed()
+        case 8:
+            functions_probability_discrete()
+        case 9:
+            menu_main()
+
+
+def poisson_distributed(lam=None):
+    jump_to_options = lam is not None
+
+    if lam is None:
+        print("Durchschnittliche Auftrittsrate λ als Dezimalzahl oder Bruch eingeben:")
+        lam = cinput.float_fraction(False, True)
+
+    if not jump_to_options:
+        print(cprint.bold("Poisson-Verteilung: X ~ Po({})".format(cprint.rounded(lam))))
+        print("E(X) = λ =", cprint.yellow_bold_rounded(lam))
+        print("Var(X) = λ =", cprint.yellow_bold_rounded(lam))
+        print("Std(X) =", cprint.yellow_bold_rounded(probability_discrete.poisson_std(lam)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " P(genau x)\n" +
@@ -543,91 +604,31 @@ def binomial_distributed(n=None, p=None):
     match cinput.integer(1, 8):
         case 1:
             print("Anzahl erfolgreicher Versuche x für P(X = x) eingeben:")
-            x = cinput.integer(0, n)
-            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.binomial_pdf(n, p, x)))
-            binomial_distributed(n, p)
+            x = cinput.integer(0, None)
+            print("P(X = {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.poisson_pdf(lam, x)))
+            poisson_distributed(lam)
         case 2:
             print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
             x = cinput.integer(0, None)
             print("P(X >= {}) =".format(x),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.binomial_cdf(n, p, x - 1))))
-            binomial_distributed(n, p)
+                  cprint.yellow_bold_rounded(1 - probability_discrete.poisson_cdf(lam, x - 1)))
+            poisson_distributed(lam)
         case 3:
             print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
             x = cinput.integer(0, None)
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.binomial_cdf(n, p, x)))
-            binomial_distributed(n, p)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_discrete.poisson_cdf(lam, x)))
+            poisson_distributed(lam)
         case 4:
             print("Anzahl erfolgreicher Versuche x für P(X > x) eingeben:")
-            x = cinput.float_fraction()
+            x = cinput.integer(0, None)
             print("P(X > {}) = 1 - P(X <= {}) =".format(x, x),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.binomial_cdf(n, p, x))))
-            binomial_distributed(n, p)
+                  cprint.yellow_bold_rounded(1 - probability_discrete.poisson_cdf(lam, x)))
+            poisson_distributed(lam)
         case 5:
             print("Anzahl erfolgreicher Versuche x für P(X < x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X < {}) = P(X <= {}) =".format(x, x - 1),
-                  cprint.yellow_bold(probability_discrete.binomial_cdf(n, p, x - 1)))
-            binomial_distributed(n, p)
-        case 6:
-            binomial_distributed()
-        case 7:
-            functions_probability_discrete()
-        case 8:
-            menu_main()
-
-
-def poisson_distributed(lam=None):
-    jump_to_options = lam is not None
-
-    if lam is None:
-        print("Durchschnittliche Auftrittsrate λ als Dezimalzahl oder Bruch eingeben:")
-        lam = cinput.float_fraction(False, True)
-
-    if not jump_to_options:
-        print(cprint.bold("Poisson-Verteilung: X ~ Po({})".format(lam)))
-        print("E(X) = λ =", cprint.yellow_bold(lam))
-        print("Var(X) = λ =", cprint.yellow_bold(lam))
-        print("Std(X) =", cprint.yellow_bold(probability_discrete.poisson_std(lam)))
-
-    print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(genau x)\n" +
-          cprint.bold(2) + " P(mindestens x)\n" +
-          cprint.bold(3) + " P(höchstens x)\n" +
-          cprint.bold(4) + " P(mehr als x)\n" +
-          cprint.bold(5) + " P(weniger als x)\n" +
-          cprint.bold(6) + " Funktion erneut verwenden\n" +
-          cprint.bold(7) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
-          cprint.bold(8) + " Hauptmenü")
-
-    match cinput.integer(1, 8):
-        case 1:
-            print("Anzahl Vorkommnisse x für P(X = x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X = {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_pdf(lam, x)))
-            poisson_distributed(lam)
-        case 2:
-            print("Anzahl Vorkommnisse x für P(X >= x) eingeben:")
             x = cinput.integer(0, None)
-            print("P(X >= {}) =".format(x),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.poisson_cdf(lam, x - 1))))
-            poisson_distributed(lam)
-        case 3:
-            print("Anzahl Vorkommnisse x für P(X <= x) eingeben:")
-            x = cinput.integer(0, None)
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_discrete.poisson_cdf(lam, x)))
-            poisson_distributed(lam)
-        case 4:
-            print("Anzahl Vorkommnisse x für P(X > x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X > {}) = 1 - P(X <= {}) =".format(x, x),
-                  cprint.yellow_bold(cprint.rounded(1 - probability_discrete.poisson_cdf(lam, x))))
-            poisson_distributed(lam)
-        case 5:
-            print("Anzahl Vorkommnisse x für P(X < x) eingeben:")
-            x = cinput.float_fraction()
             print("P(X < {}) = P(X <= {}) =".format(x, x - 1),
-                  cprint.yellow_bold(probability_discrete.poisson_cdf(lam, x - 1)))
+                  cprint.yellow_bold_rounded(probability_discrete.poisson_cdf(lam, x - 1)))
             poisson_distributed(lam)
         case 6:
             poisson_distributed()
@@ -648,9 +649,9 @@ def uniform_distributed(a=None, b=None):
         b = cinput.float_fraction()
 
     if not jump_to_options:
-        print(cprint.bold("Gleichverteilung: X ~ U({}, {})".format(a, b)))
-        print("E(X) =", cprint.yellow_bold(probability_continuous.uniform_mean(a, b)))
-        print("Var(X) =", cprint.yellow_bold(probability_continuous.uniform_var(a, b)))
+        print(cprint.bold("Gleichverteilung: X ~ U({}, {})".format(cprint.rounded(a), cprint.rounded(b))))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.uniform_mean(a, b)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.uniform_var(a, b)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " P(höchstens x)\n" +
@@ -660,9 +661,9 @@ def uniform_distributed(a=None, b=None):
 
     match cinput.integer(1, 4):
         case 1:
-            print("Höchstwert x für P(X <= x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_continuous.uniform_max(a, b, x)))
+            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_continuous.uniform_max(a, b, x)))
             uniform_distributed(a, b)
         case 2:
             poisson_distributed()
@@ -680,9 +681,9 @@ def exponential_distributed(lam=None):
         lam = cinput.float_fraction(False, True)
 
     if not jump_to_options:
-        print(cprint.bold("Exponentialverteilung: X ~ exp({})".format(lam)))
-        print("E(X) =", cprint.yellow_bold(probability_continuous.exponential_mean(lam)))
-        print("Var(X) =", cprint.yellow_bold(probability_continuous.exponential_var(lam)))
+        print(cprint.bold("Exponentialverteilung: X ~ exp({})".format(cprint.rounded(lam))))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.exponential_mean(lam)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.exponential_var(lam)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " P(höchstens x)\n" +
@@ -692,9 +693,9 @@ def exponential_distributed(lam=None):
 
     match cinput.integer(1, 4):
         case 1:
-            print("Höchstanzahl Vorkommnisse x für P(X <= x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_continuous.exponential_max(lam, x)))
+            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_continuous.exponential_max(lam, x)))
             exponential_distributed(lam)
         case 2:
             exponential_distributed()
@@ -716,9 +717,9 @@ def normal_distributed(mu=None, sigma=None):
         sigma = cinput.float_fraction(False, False)
 
     if not jump_to_options:
-        print(cprint.bold("Normalverteilung: X ~ N({}, {})".format(mu, sigma)))
-        print("E(X) =", cprint.yellow_bold(probability_continuous.normal_mean(mu)))
-        print("Var(X) =", cprint.yellow_bold(probability_continuous.normal_var(sigma)))
+        print(cprint.bold("Normalverteilung: X ~ N({}, {})".format(cprint.rounded(mu), cprint.rounded(sigma))))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.normal_mean(mu)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.normal_var(sigma)))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " P(höchstens x)\n" +
@@ -728,9 +729,9 @@ def normal_distributed(mu=None, sigma=None):
 
     match cinput.integer(1, 4):
         case 1:
-            print("Höchstanzahl Vorkommnisse x für P(X <= x) eingeben:")
-            x = cinput.float_fraction()
-            print("P(X <= {}) =".format(x), cprint.yellow_bold(probability_continuous.normal_max(mu, sigma, x)))
+            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_continuous.normal_max(mu, sigma, x)))
             normal_distributed(mu, sigma)
         case 2:
             normal_distributed()
@@ -759,32 +760,32 @@ def probability_calculation(called_from_discrete):
 
     match cinput.integer(1, 9):
         case 1:
-            print("Ereignis x für P(X >= x) eingeben:")
-            x = cinput.float_fraction()
+            print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
+            x = cinput.integer(0, None)
             print("P(X >= {}) =".format(x), cprint.yellow_bold("1 - P(X <= {})".format(x - 1)))
         case 2:
-            print("Wert x für P(X <= x) eingeben:")
-            x = cinput.float_fraction()
+            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
             print(cprint.yellow_bold("P(X <= {})".format(x)))
         case 3:
-            print("Wert x für P(X > x) eingeben:")
-            x = cinput.float_fraction()
+            print("Anzahl erfolgreicher Versuche x für P(X > x) eingeben:")
+            x = cinput.integer(0, None)
             print("P(X > {}) =".format(x), cprint.yellow_bold("1 - P(X <= {})".format(x)))
         case 4:
-            print("Wert x für P(X < x) eingeben:")
-            x = cinput.float_fraction()
+            print("Anzahl erfolgreicher Versuche x für P(X < x) eingeben:")
+            x = cinput.integer(0, None)
             print("P(X < {}) =".format(x), cprint.yellow_bold("P(X <= {})".format(x - 1)))
         case 5:
-            print("Wert x für P(x <= X <= y) eingeben:")
-            x = cinput.float_fraction()
-            print("Wert y für P(x <= X <= y) eingeben:")
-            y = cinput.float_fraction()
+            print("Anzahl erfolgreicher Versuche x für P(x <= X <= y) eingeben:")
+            x = cinput.integer(0, None)
+            print("Anzahl erfolgreicher Versuche y für P(x <= X <= y) eingeben:")
+            y = cinput.integer(0, None)
             print("P({} <= X <= {}) =".format(x, y), cprint.yellow_bold("P(X <= {}) - P(X <= {})".format(y, x)))
         case 6:
-            print("Wert x für P(X = x ∨ X = y) eingeben:")
-            x = cinput.float_fraction()
-            print("Wert y für P(X = x ∨ X = y) eingeben:")
-            y = cinput.float_fraction()
+            print("Anzahl erfolgreicher Versuche x für P(X = x ∨ X = y) eingeben:")
+            x = cinput.integer(0, None)
+            print("Anzahl erfolgreicher Versuche y für P(X = x ∨ X = y) eingeben:")
+            y = cinput.integer(0, None)
             print("P(X = {} ∨ X = {}) =".format(x, y), cprint.yellow_bold("P(X = {}) + P(X = {})".format(x, y)))
         case 7:
             print("Bezeichnung der gesuchten Wahrscheinlichkeit eingeben:")
