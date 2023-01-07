@@ -284,19 +284,19 @@ def combination(elements_all=None, elements_sorted=None, elements_repetition=Non
 
     if elements_all:
         result = probability_discrete.p_n(n)
-        print("P({}, {}) = {}! =".format(n, n, n), cprint.yellow_bold(result))
+        print("P({}, {}) = {}! =".format(n, n, n), cprint.yellow_bold_rounded(result))
     elif not elements_all and elements_sorted and not elements_repetition:
         result = probability_discrete.p_n_k(n, k)
-        print("P({}, {}) = {}! / ({}-{})! =".format(n, k, n, n, k), cprint.yellow_bold(result))
+        print("P({}, {}) = {}! / ({}-{})! =".format(n, k, n, n, k), cprint.yellow_bold_rounded(result))
     elif not elements_all and elements_sorted and elements_repetition:
         result = probability_discrete.p_w(n, k)
-        print("P^W({}, {}) = {}^{} =".format(n, k, n, k), cprint.yellow_bold(result))
+        print("P^W({}, {}) = {}^{} =".format(n, k, n, k), cprint.yellow_bold_rounded(result))
     elif not elements_all and not elements_sorted and not elements_repetition:
         result = probability_discrete.c_n_k(n, k)
-        print("C({}, {}) = ({} über {}) =".format(n, k, n, k), cprint.yellow_bold(result))
+        print("C({}, {}) = ({} über {}) =".format(n, k, n, k), cprint.yellow_bold_rounded(result))
     elif not elements_all and not elements_sorted and elements_repetition:
         result = probability_discrete.c_w(n, k)
-        print("C^W({}, {}) = (({}+{}-1) über {}) =".format(n, k, n, k, k), cprint.yellow_bold(result))
+        print("C^W({}, {}) = (({}+{}-1) über {}) =".format(n, k, n, k, k), cprint.yellow_bold_rounded(result))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " {} mit anderen Werten berechnen\n".format(name) +
