@@ -39,7 +39,7 @@ def mode(lst):
     # return max(lst, key=lst.count)
     modes = multimode(lst)
     if len(modes) == 1:
-        return modes[0]
+        return str(modes[0])
     else:
         for i in range(len(modes)):
             modes[i] = cprint.rounded(modes[i])
