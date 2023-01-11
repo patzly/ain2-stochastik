@@ -546,7 +546,7 @@ def binomial_distributed(n=None, p=None):
         case 2:
             print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
             x = cinput.integer(0, None)
-            print("P(X >= {}) =".format(x),
+            print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x - 1),
                   cprint.yellow_bold_rounded(1 - probability_discrete.binomial_cdf(n, p, x - 1)))
             binomial_distributed(n, p)
         case 3:
@@ -610,7 +610,7 @@ def poisson_distributed(lam=None):
         case 2:
             print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
             x = cinput.integer(0, None)
-            print("P(X >= {}) =".format(x),
+            print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x - 1),
                   cprint.yellow_bold_rounded(1 - probability_discrete.poisson_cdf(lam, x - 1)))
             poisson_distributed(lam)
         case 3:
