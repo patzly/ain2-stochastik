@@ -15,23 +15,20 @@
 #
 #  Copyright (c) 2022 by Patrick Zedler
 import math
-from statistics import NormalDist
+import scipy.stats as stats
 
 
-def uniform_density(a, b, x):
-    if a <= x <= b:
-        return 1 / (b-a)
-    else:
-        return 0
-
-
-def uniform_max(a, b, x):
+def uniform_cdf(a, b, x):
     if x < a:
         return 0
     elif a <= x <= b:
         return (x-a) / (b-a)
     else:  # x > b
         return 1
+
+
+def uniform_ppf(a, b, p):
+    return stats.uniform.ppf(p, loc=a, scale=b-a)
 
 
 def uniform_mean(a, b):
@@ -42,11 +39,19 @@ def uniform_var(a, b):
     return (b-a)**2 / 12
 
 
-def exponential_max(lam, x):
+def uniform_std(a, b):
+    return math.sqrt(uniform_var(a, b))
+
+
+def exponential_cdf(lam, x):
     if x >= 0:
         return 1 - math.e**(-lam * x)
     else:
         return 0
+
+
+def exponential_ppf(lam, p):
+    return stats.expon.ppf(p, loc=0, scale=1/lam)
 
 
 def exponential_mean(lam):
@@ -57,8 +62,16 @@ def exponential_var(lam):
     return 1 / lam**2
 
 
-def normal_max(mu, sigma, x):
-    return NormalDist(mu=mu, sigma=sigma).cdf(x)
+def exponential_std(lam):
+    return math.sqrt(exponential_var(lam))
+
+
+def normal_cdf(mu, sigma, x):
+    return stats.norm.cdf(x, loc=mu,scale=sigma)
+
+
+def normal_ppf(mu, sigma, x):
+    return stats.norm.ppf(x, mu, sigma)
 
 
 def normal_mean(mu):
@@ -67,3 +80,7 @@ def normal_mean(mu):
 
 def normal_var(sigma):
     return sigma**2
+
+
+def normal_std(sigma):
+    return math.sqrt(normal_var(sigma))

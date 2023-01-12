@@ -638,115 +638,7 @@ def poisson_distributed(lam=None):
             menu_main()
 
 
-def uniform_distributed(a=None, b=None):
-    jump_to_options = a is not None and b is not None
-
-    if a is None:
-        print("Minimaler Wert a eingeben:")
-        a = cinput.float_fraction()
-    if b is None:
-        print("Maximaler Wert b eingeben:")
-        b = cinput.float_fraction()
-
-    if not jump_to_options:
-        print(cprint.bold("Gleichverteilung: X ~ U({}, {})".format(cprint.rounded(a), cprint.rounded(b))))
-        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.uniform_mean(a, b)))
-        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.uniform_var(a, b)))
-
-    print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(höchstens x)\n" +
-          cprint.bold(2) + " Funktion erneut verwenden\n" +
-          cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
-          cprint.bold(4) + " Hauptmenü")
-
-    match cinput.integer(1, 4):
-        case 1:
-            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
-            x = cinput.integer(0, None)
-            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_continuous.uniform_max(a, b, x)))
-            uniform_distributed(a, b)
-        case 2:
-            uniform_distributed()
-        case 3:
-            functions_probability_continuous()
-        case 4:
-            menu_main()
-
-
-def exponential_distributed(lam=None):
-    jump_to_options = lam is not None
-
-    if lam is None:
-        print("Durchschnittliche Auftrittsrate λ als Dezimalzahl oder Bruch eingeben:")
-        lam = cinput.float_fraction(False, True)
-
-    if not jump_to_options:
-        print(cprint.bold("Exponentialverteilung: X ~ exp({})".format(cprint.rounded(lam))))
-        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.exponential_mean(lam)))
-        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.exponential_var(lam)))
-
-    print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(höchstens x)\n" +
-          cprint.bold(2) + " Funktion erneut verwenden\n" +
-          cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
-          cprint.bold(4) + " Hauptmenü")
-
-    match cinput.integer(1, 4):
-        case 1:
-            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
-            x = cinput.integer(0, None)
-            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_continuous.exponential_max(lam, x)))
-            exponential_distributed(lam)
-        case 2:
-            exponential_distributed()
-        case 3:
-            functions_probability_continuous()
-        case 4:
-            menu_main()
-
-
-def normal_distributed(mu=None, sigma=None):
-    jump_to_options = mu is not None and sigma is not None
-
-    if mu is None:
-        print("Erwartungswert μ als Dezimalzahl eingeben (standard-normalverteilt = 0):")
-        mu = cinput.float_fraction(False, False)
-
-    if sigma is None:
-        print("Standardabweichung σ als Dezimalzahl eingeben (standard-normalverteilt = 1):")
-        sigma = cinput.float_fraction(False, False)
-
-    if not jump_to_options:
-        print(cprint.bold("Normalverteilung: X ~ N({}, {})".format(cprint.rounded(mu), cprint.rounded(sigma))))
-        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.normal_mean(mu)))
-        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.normal_var(sigma)))
-
-    print(cprint.blue_bold("\nOptionen:\n") +
-          cprint.bold(1) + " P(höchstens x)\n" +
-          cprint.bold(2) + " Funktion erneut verwenden\n" +
-          cprint.bold(3) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
-          cprint.bold(4) + " Hauptmenü")
-
-    match cinput.integer(1, 4):
-        case 1:
-            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
-            x = cinput.integer(0, None)
-            print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_continuous.normal_max(mu, sigma, x)))
-            normal_distributed(mu, sigma)
-        case 2:
-            normal_distributed()
-        case 3:
-            functions_probability_continuous()
-        case 4:
-            menu_main()
-
-
-def probability_calculation(called_from_discrete):
-    if called_from_discrete:
-        back = "Funktionen zu diskreter Wahrscheinlichkeitstheorie"
-    else:
-        back = "Funktionen zu kontinuierlicher Wahrscheinlichkeitstheorie"
-
+def probability_calculation():
     print(cprint.blue_bold("Kalkulationshilfe:\n") +
           cprint.bold(1) + " Mindestens x\n" +
           cprint.bold(2) + " Höchstens x\n" +
@@ -755,7 +647,7 @@ def probability_calculation(called_from_discrete):
           cprint.bold(5) + " Zwischen x und y\n" +
           cprint.bold(6) + " x oder y\n" +
           cprint.bold(7) + " Bedingte Wahrscheinlichkeiten\n" +
-          cprint.bold(8) + " {}\n".format(back) +
+          cprint.bold(8) + " Funktionen zu diskreter Wahrscheinlichkeitstheorie\n" +
           cprint.bold(9) + " Hauptmenü")
 
     match cinput.integer(1, 9):
@@ -801,11 +693,192 @@ def probability_calculation(called_from_discrete):
                   cprint.yellow_bold("P({})".format(condition)), "=", cprint.yellow("({})".format(top)), "/",
                   cprint.yellow("({})".format(bottom)))
         case 8:
-            if called_from_discrete:
-                functions_probability_discrete()
-            else:
-                functions_probability_continuous()
+            functions_probability_discrete()
         case 9:
+            menu_main()
+
+
+def uniform_distributed(a=None, b=None):
+    jump_to_options = a is not None and b is not None
+
+    if a is None:
+        print("Minimalen Wert a eingeben:")
+        a = cinput.float_fraction()
+    if b is None:
+        print("Maximalen Wert b eingeben:")
+        b = cinput.float_fraction()
+
+    if not jump_to_options:
+        print(cprint.bold("Gleichverteilung: X ~ U({}, {})".format(cprint.rounded(a), cprint.rounded(b))))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.uniform_mean(a, b)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.uniform_var(a, b)))
+        print("Std(X) =", cprint.yellow_bold_rounded(probability_continuous.uniform_std(a, b)))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " P(mindestens/mehr als x)\n" +
+          cprint.bold(2) + " P(höchstens/weniger als x)\n" +
+          cprint.bold(3) + " P(zwischen x und y)\n" +
+          cprint.bold(4) + " Quantil berechnen\n" +
+          cprint.bold(5) + " Funktion erneut verwenden\n" +
+          cprint.bold(6) + " Funktionen zu kontinuierlicher Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(7) + " Hauptmenü")
+
+    match cinput.integer(1, 7):
+        case 1:
+            print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x),
+                  cprint.yellow_bold_rounded(1 - probability_continuous.uniform_cdf(a, b, x)))
+            normal_distributed(a, b)
+        case 2:
+            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x, x),
+                  cprint.yellow_bold_rounded(probability_continuous.uniform_cdf(a, b, x)))
+            uniform_distributed(a, b)
+        case 3:
+            print("Anzahl erfolgreicher Versuche x für P(x <= X <= y) eingeben:")
+            x = cinput.integer(0, None)
+            print("Anzahl erfolgreicher Versuche y für P(x <= X <= y) eingeben:")
+            y = cinput.integer(0, None)
+            cdf_x = probability_continuous.uniform_cdf(a, b, x)
+            cdf_y = probability_continuous.uniform_cdf(a, b, y)
+            print("P({} <= X <= {}) = P(X <= {}) - P(X <= {}) =".format(x, y, y, x),
+                  cprint.yellow_bold_rounded(cdf_y - cdf_x))
+            uniform_distributed(a, b)
+        case 4:
+            print("Anteil p als Dezimalzahl oder mit % eingeben:")
+            p = cinput.float_fraction(True, False)
+            print(cprint.rounded(p * 100) + "%-Quantil:",
+                  cprint.yellow_bold_rounded(probability_continuous.uniform_ppf(a, b, p)))
+            uniform_distributed(a, b)
+        case 5:
+            uniform_distributed()
+        case 6:
+            functions_probability_continuous()
+        case 7:
+            menu_main()
+
+
+def exponential_distributed(lam=None):
+    jump_to_options = lam is not None
+
+    if lam is None:
+        print("Durchschnittliche Auftrittsrate λ als Dezimalzahl oder Bruch eingeben:")
+        lam = cinput.float_fraction(False, True)
+
+    if not jump_to_options:
+        print(cprint.bold("Exponentialverteilung: X ~ exp({})".format(cprint.rounded(lam))))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.exponential_mean(lam)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.exponential_var(lam)))
+        print("Std(X) =", cprint.yellow_bold_rounded(probability_continuous.exponential_std(lam)))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " P(mindestens/mehr als x)\n" +
+          cprint.bold(2) + " P(höchstens/weniger als x)\n" +
+          cprint.bold(3) + " P(zwischen x und y)\n" +
+          cprint.bold(4) + " Quantil berechnen\n" +
+          cprint.bold(5) + " Funktion erneut verwenden\n" +
+          cprint.bold(6) + " Funktionen zu kontinuierlicher Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(7) + " Hauptmenü")
+
+    match cinput.integer(1, 7):
+        case 1:
+            print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x),
+                  cprint.yellow_bold_rounded(1 - probability_continuous.exponential_cdf(lam, x)))
+            exponential_distributed(lam)
+        case 2:
+            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x, x),
+                  cprint.yellow_bold_rounded(probability_continuous.exponential_cdf(lam, x)))
+            exponential_distributed(lam)
+        case 3:
+            print("Anzahl erfolgreicher Versuche x für P(x <= X <= y) eingeben:")
+            x = cinput.integer(0, None)
+            print("Anzahl erfolgreicher Versuche y für P(x <= X <= y) eingeben:")
+            y = cinput.integer(0, None)
+            cdf_x = probability_continuous.exponential_cdf(lam, x)
+            cdf_y = probability_continuous.exponential_cdf(lam, y)
+            print("P({} <= X <= {}) = P(X <= {}) - P(X <= {}) =".format(x, y, y, x),
+                  cprint.yellow_bold_rounded(cdf_y - cdf_x))
+            exponential_distributed(lam)
+        case 4:
+            print("Anteil p als Dezimalzahl oder mit % eingeben:")
+            p = cinput.float_fraction(True, False)
+            print(cprint.rounded(p * 100) + "%-Quantil:",
+                  cprint.yellow_bold_rounded(probability_continuous.exponential_ppf(lam, p)))
+            exponential_distributed(lam)
+        case 5:
+            exponential_distributed()
+        case 6:
+            functions_probability_continuous()
+        case 7:
+            menu_main()
+
+
+def normal_distributed(mu=None, sigma=None):
+    jump_to_options = mu is not None and sigma is not None
+
+    if mu is None:
+        print("Erwartungswert μ als Dezimalzahl eingeben (Standardnormalverteilung = 0):")
+        mu = cinput.float_fraction(False, False)
+
+    if sigma is None:
+        print("Standardabweichung σ als Dezimalzahl eingeben (Standardnormalverteilung = 1):")
+        sigma = cinput.float_fraction(False, False)
+
+    if not jump_to_options:
+        print(cprint.bold("Normalverteilung: X ~ N({}, {})".format(cprint.rounded(mu), cprint.rounded(sigma))))
+        print("E(X) =", cprint.yellow_bold_rounded(probability_continuous.normal_mean(mu)))
+        print("Var(X) =", cprint.yellow_bold_rounded(probability_continuous.normal_var(sigma)))
+        print("Std(X) =", cprint.yellow_bold_rounded(probability_continuous.normal_std(sigma)))
+
+    print(cprint.blue_bold("\nOptionen:\n") +
+          cprint.bold(1) + " P(mindestens/mehr als x)\n" +
+          cprint.bold(2) + " P(höchstens/weniger als x)\n" +
+          cprint.bold(3) + " P(zwischen x und y)\n" +
+          cprint.bold(4) + " Quantil berechnen\n" +
+          cprint.bold(5) + " Funktion erneut verwenden\n" +
+          cprint.bold(6) + " Funktionen zu kontinuierlicher Wahrscheinlichkeitstheorie\n" +
+          cprint.bold(7) + " Hauptmenü")
+
+    match cinput.integer(1, 7):
+        case 1:
+            print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X >= {}) = 1 - P(X <= {}) =".format(x, x),
+                  cprint.yellow_bold_rounded(1 - probability_continuous.normal_cdf(mu, sigma, x)))
+            normal_distributed(mu, sigma)
+        case 2:
+            print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
+            x = cinput.integer(0, None)
+            print("P(X <= {}) =".format(x, x),
+                  cprint.yellow_bold_rounded(probability_continuous.normal_cdf(mu, sigma, x)))
+            normal_distributed(mu, sigma)
+        case 3:
+            print("Anzahl erfolgreicher Versuche x für P(x <= X <= y) eingeben:")
+            x = cinput.integer(0, None)
+            print("Anzahl erfolgreicher Versuche y für P(x <= X <= y) eingeben:")
+            y = cinput.integer(0, None)
+            cdf_x = probability_continuous.normal_cdf(mu, sigma, x)
+            cdf_y = probability_continuous.normal_cdf(mu, sigma, y)
+            print("P({} <= X <= {}) = P(X <= {}) - P(X <= {}) =".format(x, y, y, x),
+                  cprint.yellow_bold_rounded(cdf_y - cdf_x))
+            normal_distributed(mu, sigma)
+        case 4:
+            print("Anteil p als Dezimalzahl oder mit % eingeben:")
+            p = cinput.float_fraction(True, False)
+            print(cprint.rounded(p * 100) + "%-Quantil:",
+                  cprint.yellow_bold_rounded(probability_continuous.normal_ppf(mu, sigma, p)))
+            normal_distributed(mu, sigma)
+        case 5:
+            normal_distributed()
+        case 6:
+            functions_probability_continuous()
+        case 7:
             menu_main()
 
 
@@ -913,7 +986,7 @@ def functions_probability_discrete(func_code=0):
         case 7:
             poisson_distributed()
         case 8:
-            probability_calculation(True)
+            probability_calculation()
         case 9:
             menu_main()
 
@@ -934,12 +1007,11 @@ def functions_probability_discrete(func_code=0):
 def functions_probability_continuous(func_code=0):
     if func_code == 0:
         print(cprint.blue_bold("Kontinuierliche Wahrscheinlichkeitstheorie:\n") +
-              cprint.bold(1) + " Gleichverteilung (bei unbekannter Verteilung)\n" +
+              cprint.bold(1) + " Gleichverteilung (bei gleichmäßiger/unbekannter Verteilung)\n" +
               cprint.bold(2) + " Exponentialverteilung (Dauer zufälliger Zeitintervalle)\n" +
-              cprint.bold(3) + " Normalverteilung\n" +
-              cprint.bold(4) + " Kalkulationshilfe (mindestens, mehr als, weniger als usw.)\n" +
-              cprint.bold(5) + " Hauptmenü")
-        func_code = cinput.integer(1, 5)
+              cprint.bold(3) + " Normalverteilung (natürliche/technische Phänomene)\n" +
+              cprint.bold(4) + " Hauptmenü")
+        func_code = cinput.integer(1, 4)
 
     match func_code:
         case 1:
@@ -949,8 +1021,6 @@ def functions_probability_continuous(func_code=0):
         case 3:
             normal_distributed()
         case 4:
-            probability_calculation(False)
-        case 5:
             menu_main()
 
     print(cprint.blue_bold("\nOptionen:\n") +
@@ -967,6 +1037,6 @@ def functions_probability_continuous(func_code=0):
             menu_main()
 
 
-print("Exam Helper v1.2.1")
+print("Exam Helper v1.3.0")
 print(cprint.yellow("Viel Erfolg!\n"))
 menu_main()
