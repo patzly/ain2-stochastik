@@ -666,9 +666,9 @@ def uniform_distributed(a=None, b=None):
             print("P(X <= {}) =".format(x), cprint.yellow_bold_rounded(probability_continuous.uniform_max(a, b, x)))
             uniform_distributed(a, b)
         case 2:
-            poisson_distributed()
+            uniform_distributed()
         case 3:
-            functions_probability_discrete()
+            functions_probability_continuous()
         case 4:
             menu_main()
 
