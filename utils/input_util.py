@@ -123,3 +123,33 @@ def floats_fraction(percent_bounds=False, allow_fraction=False):
                 invalid("Nur Dezimalzahlen zulässig")
             return floats_fraction(percent_bounds, allow_fraction)
     return floats
+
+
+def float_range(mini=None, maxi=None):
+    # Prevent ValueError from being thrown when input is not a number or not in min max bounds
+    try:
+        user = float(string())
+    except ValueError:
+        invalid("Nur Dezimalzahlen zulässig")
+        return float_range(mini, maxi)
+
+    if mini is not None and maxi is not None:
+        if mini <= user <= maxi:
+            return user
+        else:
+            invalid("Nur Werte von {} bis {} zulässig".format(mini, maxi))
+            return float_range(mini, maxi)
+    elif mini is not None and maxi is None:
+        if user >= mini:
+            return user
+        else:
+            invalid("Nur Werte ab {} zulässig".format(mini))
+            return float_range(mini, maxi)
+    elif mini is None and maxi is not None:
+        if user <= maxi:
+            return user
+        else:
+            invalid("Nur Werte bis {} zulässig".format(maxi))
+            return float_range(mini, maxi)
+    else:
+        return user
