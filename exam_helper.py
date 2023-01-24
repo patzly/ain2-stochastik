@@ -612,31 +612,31 @@ def poisson_distributed(lam=None):
     match cinput.integer(1, 8):
         case 1:
             print("Anzahl erfolgreicher Versuche x für P(X = x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X = {}) =".format(cprint.rounded(x)),
                   cprint.yellow_bold_rounded(probability_discrete.poisson_pdf(lam, x)))
             poisson_distributed(lam)
         case 2:
             print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X >= {}) = 1 - P(X <= {}) =".format(cprint.rounded(x), cprint.rounded(x - 1)),
                   cprint.yellow_bold_rounded(1 - probability_discrete.poisson_cdf(lam, x - 1)))
             poisson_distributed(lam)
         case 3:
             print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X <= {}) =".format(cprint.rounded(x)),
                   cprint.yellow_bold_rounded(probability_discrete.poisson_cdf(lam, x)))
             poisson_distributed(lam)
         case 4:
             print("Anzahl erfolgreicher Versuche x für P(X > x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X > {}) = 1 - P(X <= {}) =".format(cprint.rounded(x), cprint.rounded(x)),
                   cprint.yellow_bold_rounded(1 - probability_discrete.poisson_cdf(lam, x)))
             poisson_distributed(lam)
         case 5:
             print("Anzahl erfolgreicher Versuche x für P(X < x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X < {}) = P(X <= {}) =".format(cprint.rounded(x), cprint.rounded(x - 1)),
                   cprint.yellow_bold_rounded(probability_discrete.poisson_cdf(lam, x - 1)))
             poisson_distributed(lam)
