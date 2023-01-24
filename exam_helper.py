@@ -546,31 +546,31 @@ def binomial_distributed(n=None, p=None):
     match cinput.integer(1, 9):
         case 1:
             print("Anzahl erfolgreicher Versuche x für P(X = x) eingeben:")
-            x = cinput.float_range(0, n)
+            x = cinput.integer(0, n)
             print("P(X = {}) =".format(cprint.rounded(x)),
                   cprint.yellow_bold_rounded(probability_discrete.binomial_pdf(n, p, x)))
             binomial_distributed(n, p)
         case 2:
             print("Anzahl erfolgreicher Versuche x für P(X >= x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X >= {}) = 1 - P(X <= {}) =".format(cprint.rounded(x), cprint.rounded(x - 1)),
                   cprint.yellow_bold_rounded(1 - probability_discrete.binomial_cdf(n, p, x - 1)))
             binomial_distributed(n, p)
         case 3:
             print("Anzahl erfolgreicher Versuche x für P(X <= x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X <= {}) =".format(cprint.rounded(x)),
                   cprint.yellow_bold_rounded(probability_discrete.binomial_cdf(n, p, x)))
             binomial_distributed(n, p)
         case 4:
             print("Anzahl erfolgreicher Versuche x für P(X > x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X > {}) = 1 - P(X <= {}) =".format(cprint.rounded(x), cprint.rounded(x)),
                   cprint.yellow_bold_rounded(1 - probability_discrete.binomial_cdf(n, p, x)))
             binomial_distributed(n, p)
         case 5:
             print("Anzahl erfolgreicher Versuche x für P(X < x) eingeben:")
-            x = cinput.float_range(0, None)
+            x = cinput.integer(0, None)
             print("P(X < {}) = P(X <= {}) =".format(cprint.rounded(x), cprint.rounded(x - 1)),
                   cprint.yellow_bold_rounded(probability_discrete.binomial_cdf(n, p, x - 1)))
             binomial_distributed(n, p)
