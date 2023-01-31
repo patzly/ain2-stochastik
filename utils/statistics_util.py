@@ -39,7 +39,7 @@ def mode(lst):
     # return max(lst, key=lst.count)
     modes = multimode(lst)
     if len(modes) == 1:
-        return str(modes[0])
+        return cprint.rounded(modes[0])
     else:
         for i in range(len(modes)):
             modes[i] = cprint.rounded(modes[i])
@@ -128,7 +128,7 @@ def plot_lin_regress(lst1, lst2, lbl_x, lbl_y):
     plt.show()
 
 
-def abs_frequency(lst):
+def abs_frequency(lst, stringify=False):
     # returns multidimensional array with number as the first and frequency as the second value
     absolute = []
     if len(lst) > 0:
@@ -141,31 +141,43 @@ def abs_frequency(lst):
         counter = 0
         for i in arr_sorted:
             if number != i:
-                absolute.append([number, counter])
+                if stringify:
+                    element = cprint.rounded(number)
+                else:
+                    element = int(number)
+                absolute.append([element, int(counter)])
                 number = i
                 counter = 1
             else:
                 counter += 1
-        absolute.append([number, counter])
+        if stringify:
+            element = cprint.rounded(number)
+        else:
+            element = int(number)
+        absolute.append([element, int(counter)])
     return absolute
 
 
-def rel_frequency(lst):
+def rel_frequency(lst, stringify=False):
     relative = []
     if len(lst) > 0:
-        absolute = abs_frequency(lst)
+        absolute = abs_frequency(lst, stringify=False)
         ges = 0
         for i in absolute:
             ges += i[1]
         for i in absolute:
-            relative.append([i[0], cprint.rounded(i[1] / ges)])
+            if stringify:
+                element = cprint.rounded(i[1] / ges)
+            else:
+                element = i[1] / ges
+            relative.append([i[0], element])
     return relative
 
 
 def cum_frequency(lst):
     cumulative = []
     if len(lst) > 0:
-        rel = rel_frequency(lst)
+        rel = rel_frequency(lst, stringify=False)
         kum_counter = 0
         for i in rel:
             kum_counter += i[1]

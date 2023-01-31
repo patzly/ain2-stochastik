@@ -73,20 +73,25 @@ def mean_median_mode_quartile_iqr_span_var_std(jump_to_options=False):
         else:
             lst = list1
 
-        print("Arithmetisches Mittel:", cprint.yellow_bold_rounded(statistics.mean(lst)))
-        print("Median:", cprint.yellow_bold_rounded(statistics.median(lst)))
+        print("Arithmetisches Mittel:", cprint.yellow_bold_rounded(statistics.mean(lst)),
+              cprint.magenta("numpy.mean()"))
+        print("Median:", cprint.yellow_bold_rounded(statistics.median(lst)), cprint.magenta("numpy.median(lst)"))
         mode = statistics.mode(lst)
         if "," in mode:
-            print("Modalwerte:", cprint.yellow_bold(mode))
+            print("Modalwerte:", cprint.yellow_bold(mode), cprint.magenta("statistics.multimode(lst)"))
         else:
-            print("Modalwert:", cprint.yellow_bold(mode))
-        print("25%-Quartil:", cprint.yellow_bold_rounded(statistics.quantile(lst, 0.25)))
+            print("Modalwert:", cprint.yellow_bold(mode), cprint.magenta("statistics.multimode(lst)"))
+        print("25%-Quartil:", cprint.yellow_bold_rounded(statistics.quantile(lst, 0.25)),
+              cprint.magenta("numpy.quantile(lst, p, method='averaged_inverted_cdf')"))
         print("50%-Quartil:", cprint.yellow_bold_rounded(statistics.quantile(lst, 0.50)))
         print("75%-Quartil:", cprint.yellow_bold_rounded(statistics.quantile(lst, 0.75)))
-        print("Interquartilabstand:", cprint.yellow_bold_rounded(statistics.iqr(lst)))
-        print("Spannweite:", cprint.yellow_bold_rounded(statistics.span(lst)))
-        print("Empirische Varianz:", cprint.yellow_bold_rounded(statistics.var(lst)))
-        print("Empirische Standardabweichung:", cprint.yellow_bold_rounded(statistics.std(lst)))
+        print("Interquartilabstand:", cprint.yellow_bold_rounded(statistics.iqr(lst)),
+              cprint.magenta("statistics.quantile(lst, 0.75) - statistics.quantile(lst, 0.25)"))
+        print("Spannweite:", cprint.yellow_bold_rounded(statistics.span(lst)), cprint.magenta("max(lst) - min(lst)"))
+        print("Empirische Varianz:", cprint.yellow_bold_rounded(statistics.var(lst)),
+              cprint.magenta("numpy.var(lst, ddof=1)"))
+        print("Empirische Standardabweichung:", cprint.yellow_bold_rounded(statistics.std(lst)),
+              cprint.magenta("math.sqrt(numpy.var(lst))"))
 
     print(cprint.blue_bold("\nOptionen:\n") +
           cprint.bold(1) + " Anderes Quantil ausrechnen\n" +
@@ -122,7 +127,8 @@ def quantile():
         lst = list1
     print("Anteil p als Dezimalzahl oder mit % eingeben:")
     p = cinput.float_fraction(True, False)
-    print(cprint.rounded(p * 100) + "%-Quantil:", cprint.yellow_bold_rounded(statistics.quantile(lst, p)))
+    print(cprint.rounded(p * 100) + "%-Quantil:", cprint.yellow_bold_rounded(statistics.quantile(lst, p)),
+          cprint.magenta("numpy.quantile(lst, {}, method='averaged_inverted_cdf')".format(cprint.rounded(p))))
 
 
 def corrcoef_covar():
@@ -134,8 +140,10 @@ def corrcoef_covar():
     else:
         lst1 = list1
         lst2 = list2
-    print("Empirischer Korrelationskoeffizient:", cprint.yellow_bold_rounded(statistics.corrcoef(lst1, lst2)))
-    print("Empirische Kovarianz:", cprint.yellow_bold_rounded(statistics.covar(lst1, lst2)))
+    print("Empirischer Korrelationskoeffizient:", cprint.yellow_bold_rounded(statistics.corrcoef(lst1, lst2)),
+          cprint.magenta("statistics.pearsonr(lst1, lst2)[0]"))
+    print("Empirische Kovarianz:", cprint.yellow_bold_rounded(statistics.covar(lst1, lst2)),
+          cprint.magenta("statistics.covariance(lst1, lst2)"))
 
 
 def det():
@@ -147,7 +155,8 @@ def det():
     else:
         lst1 = list1
         lst2 = list2
-    print("Bestimmtheitsmaß:", cprint.yellow_bold_rounded(statistics.det(lst1, lst2)))
+    print("Bestimmtheitsmaß:", cprint.yellow_bold_rounded(statistics.det(lst1, lst2)),
+          cprint.magenta("statistics.pearsonr(lst1, lst2)[0]**2"))
 
 
 def plot_lin_regress():
@@ -188,9 +197,9 @@ def frequency():
 
     match answer:
         case 1:
-            print("Absolute Häufigkeiten:", cprint.yellow_bold(statistics.abs_frequency(lst)))
+            print("Absolute Häufigkeiten:", cprint.yellow_bold(statistics.abs_frequency(lst, stringify=True)))
         case 2:
-            print("Relative Häufigkeiten:", cprint.yellow_bold(statistics.rel_frequency(lst)))
+            print("Relative Häufigkeiten:", cprint.yellow_bold(statistics.rel_frequency(lst, stringify=True)))
         case 3:
             print("Kumulierte Häufigkeiten:", cprint.yellow_bold(statistics.cum_frequency(lst)))
         case 4:
@@ -1115,6 +1124,6 @@ def functions_probability_continuous(func_code=0):
             menu_main()
 
 
-print("Exam Helper v1.3.1")
+print("Exam Helper v1.3.2")
 print(cprint.yellow("Viel Erfolg!\n"))
 menu_main()
